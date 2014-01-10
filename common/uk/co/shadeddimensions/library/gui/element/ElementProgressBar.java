@@ -56,16 +56,16 @@ public class ElementProgressBar extends ElementBase
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 44, 18, w, h);
+        drawTexturedModalRect(x, y, 44, 18, sizeX, sizeY);
         
         int width = 0;
 
         if (currentProgress > 0)
         {
-            width = Math.round((float)currentProgress * w / maxProgress);
+            width = Math.round((float)currentProgress * sizeX / maxProgress);
         }
 
-        drawTexturedModalRect(x, y, 44, 18 + 4, width, h);
+        drawTexturedModalRect(x, y, 44, 18 + 4, width, sizeY);
     }
 
     @Override

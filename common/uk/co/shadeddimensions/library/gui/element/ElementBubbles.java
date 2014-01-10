@@ -23,8 +23,8 @@ public class ElementBubbles extends ElementProgressBar
     public ElementBubbles(GuiBase parent, int x, int y, int progress, int max, boolean tooltip)
     {
         super(parent, x, y, progress, max);
-        w = 10;
-        h = 28;
+        sizeX = 10;
+        sizeY = 28;
         showTooltip = tooltip;
     }
 
@@ -33,7 +33,7 @@ public class ElementBubbles extends ElementProgressBar
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 16, 26, w, h);
+        drawTexturedModalRect(x, y, 16, 26, sizeX, sizeY);
         
         if (!isDisabled())
         {
@@ -41,10 +41,10 @@ public class ElementBubbles extends ElementProgressBar
 
             if (currentProgress > 0)
             {
-                height = Math.round((float)currentProgress * h / maxProgress);
+                height = Math.round((float)currentProgress * sizeY / maxProgress);
             }
 
-            drawTexturedModalRect(x, y + h - height, 16 + w, 26 + h - height, w + 1, height);
+            drawTexturedModalRect(x, y + sizeY - height, 16 + sizeX, 26 + sizeY - height, sizeX + 1, height);
         }
     }
 

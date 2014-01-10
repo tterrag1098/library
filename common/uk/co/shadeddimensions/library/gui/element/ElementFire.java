@@ -23,8 +23,8 @@ public class ElementFire extends ElementProgressBar
     public ElementFire(GuiBase parent, int x, int y, int progress, int max, boolean tooltip)
     {
         super(parent, x, y, progress, max);
-        w = 14;
-        h = 14;
+        sizeX = 14;
+        sizeY = 14;
         showTooltip = tooltip;
     }
 
@@ -33,16 +33,16 @@ public class ElementFire extends ElementProgressBar
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 88, 0, w, h);
+        drawTexturedModalRect(x, y, 88, 0, sizeX, sizeY);
         
         int height = 0;
 
         if (currentProgress > 0)
         {
-            height = Math.round((float)currentProgress * h / maxProgress);
+            height = Math.round((float)currentProgress * sizeY / maxProgress);
         }
 
-        drawTexturedModalRect(x, y + height, 88 + w, height, w, h);
+        drawTexturedModalRect(x, y + height, 88 + sizeX, height, sizeX, sizeY);
 
         if (isDisabled())
         {

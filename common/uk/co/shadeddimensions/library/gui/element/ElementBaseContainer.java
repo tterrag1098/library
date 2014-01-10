@@ -18,7 +18,7 @@ public abstract class ElementBaseContainer extends ElementBase
 
     public ElementBaseContainer parseElements(String string)
     {
-        for (ElementBase element : new Parser(parent).setMaxWidth(w).parse(string))
+        for (ElementBase element : new Parser(parent).setMaxWidth(sizeX).parse(string))
         {
             addElement(element);
         }
@@ -50,7 +50,7 @@ public abstract class ElementBaseContainer extends ElementBase
     {
         for (ElementBase element : elements)
         {
-            if (element.isVisible() && element.intersectsWith(parent.guiLeft() + xPos, parent.guiTop() + yPos))
+            if (element.isVisible() && element.intersectsWith(parent.guiLeft() + posX, parent.guiTop() + posY))
             {
                 element.mouseClicked(mouseButton);
             }
@@ -74,7 +74,7 @@ public abstract class ElementBaseContainer extends ElementBase
     {
         for (ElementBase element : elements)
         {
-            if (element.intersectsWith(parent.guiLeft() + xPos, parent.guiTop() + yPos))
+            if (element.intersectsWith(parent.guiLeft() + posX, parent.guiTop() + posY))
             {
                 element.getTooltip(list);
             }

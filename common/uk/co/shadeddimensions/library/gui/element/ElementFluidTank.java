@@ -20,8 +20,8 @@ public class ElementFluidTank extends ElementProgressBar
     public ElementFluidTank(GuiBase parent, int x, int y, int progress, int max, Fluid f, int scale)
     {
         super(parent, x, y, progress, max);
-        w = 18;
-        h = 62;
+        sizeX = 18;
+        sizeY = 62;
         this.scale = (byte) scale;
         fluid = f;
     }
@@ -55,7 +55,7 @@ public class ElementFluidTank extends ElementProgressBar
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 210, 0, w, h);
+        drawTexturedModalRect(x, y, 210, 0, sizeX, sizeY);
         
         if (!isDisabled() && fluid != null)
         {
@@ -63,8 +63,8 @@ public class ElementFluidTank extends ElementProgressBar
 
             if (currentProgress > 0)
             {
-                height = Math.round((float)currentProgress * h / maxProgress);
-                height = Math.min(height, h - 2);
+                height = Math.round((float)currentProgress * sizeY / maxProgress);
+                height = Math.min(height, sizeY - 2);
             }
 
             Icon texture = fluid.getIcon();
@@ -74,7 +74,7 @@ public class ElementFluidTank extends ElementProgressBar
             
             for (int i = 0; i < height; i += 16)
             {
-                drawScaledTexturedModelRectFromIcon(x + 1, y + h - height - 1 + i, texture, 16, Math.min(height - i, 16));
+                drawScaledTexturedModelRectFromIcon(x + 1, y + sizeY - height - 1 + i, texture, 16, Math.min(height - i, 16));
             }
         }
 
@@ -82,7 +82,7 @@ public class ElementFluidTank extends ElementProgressBar
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             parent.textureManager().bindTexture(texture);
-            drawTexturedModalRect(x + 1, y + (scale == 1 ? 6 : 14), scale == 1 ? 228 : 210, scale == 1 ? 42 : 62, w, h);
+            drawTexturedModalRect(x + 1, y + (scale == 1 ? 6 : 14), scale == 1 ? 228 : 210, scale == 1 ? 42 : 62, sizeX, sizeY);
         }
     }
 

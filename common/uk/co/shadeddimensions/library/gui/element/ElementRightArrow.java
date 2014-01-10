@@ -23,8 +23,8 @@ public class ElementRightArrow extends ElementProgressBar
     public ElementRightArrow(GuiBase parent, int x, int y, int progress, int max, boolean tooltip)
     {
         super(parent, x, y, progress, max);
-        w = 22;
-        h = 15;
+        sizeX = 22;
+        sizeY = 15;
         showTooltip = tooltip;
     }
 
@@ -33,16 +33,16 @@ public class ElementRightArrow extends ElementProgressBar
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 44, 0, w, h);
+        drawTexturedModalRect(x, y, 44, 0, sizeX, sizeY);
         
         int width = 0;
 
         if (currentProgress > 0)
         {
-            width = Math.round((float)currentProgress * w / maxProgress);
+            width = Math.round((float)currentProgress * sizeX / maxProgress);
         }
 
-        drawTexturedModalRect(x, y, 44 + w, 0, width, h);
+        drawTexturedModalRect(x, y, 44 + sizeX, 0, width, sizeY);
 
         if (isDisabled())
         {

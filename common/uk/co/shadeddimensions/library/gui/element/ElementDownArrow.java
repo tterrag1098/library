@@ -23,8 +23,8 @@ public class ElementDownArrow extends ElementProgressBar
     public ElementDownArrow(GuiBase parent, int x, int y, int progress, int max, boolean tooltip)
     {
         super(parent, x, y, progress, max);
-        w = 8;
-        h = 27;
+        sizeX = 8;
+        sizeY = 27;
         showTooltip = tooltip;
     }
 
@@ -33,7 +33,7 @@ public class ElementDownArrow extends ElementProgressBar
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 0, 26, w, h);
+        drawTexturedModalRect(x, y, 0, 26, sizeX, sizeY);
         
         if (!isDisabled())
         {
@@ -41,10 +41,10 @@ public class ElementDownArrow extends ElementProgressBar
 
             if (currentProgress > 0)
             {
-                height = Math.round((float)currentProgress * h / maxProgress);
+                height = Math.round((float)currentProgress * sizeY / maxProgress);
             }
 
-            drawTexturedModalRect(x, y, w, 26, w, height);
+            drawTexturedModalRect(x, y, sizeX, 26, sizeX, height);
         }
     }
 

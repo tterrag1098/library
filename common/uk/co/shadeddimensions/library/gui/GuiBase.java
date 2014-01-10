@@ -31,6 +31,11 @@ public class GuiBase extends GuiContainer
     {
         this(new ContainerBase(), null);
     }
+    
+    public GuiBase(Container container)
+    {
+        this(container, null);
+    }
 
     public GuiBase(Container container, ResourceLocation texture)
     {

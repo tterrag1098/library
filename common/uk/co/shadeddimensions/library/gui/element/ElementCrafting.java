@@ -63,7 +63,7 @@ public class ElementCrafting extends ElementBaseContainer
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             parent.textureManager().bindTexture(texture);
-            drawTexturedModalRect(x, y, 146, 0, w, h);
+            drawTexturedModalRect(x, y, 146, 0, sizeX, sizeY);
         }
         
         super.draw(x, y);
@@ -113,7 +113,7 @@ public class ElementCrafting extends ElementBaseContainer
         }
         else
         {
-            w = type == 1 ? 82 : 116;
+            sizeX = type == 1 ? 82 : 116;
             elements.get(elements.size() - 2).setVisible(true);
             elements.get(elements.size() - 1).setVisible(true);
             ((ElementItemIconWithSlot) elements.get(elements.size() - 1)).setItem(stack);

@@ -24,14 +24,14 @@ public class ElementScrollPanel extends ElementBaseContainer
     {
         super.addElement(element);
 
-        if (element.yPos + element.h > contentHeight)
+        if (element.posY + element.sizeY > contentHeight)
         {
-            contentHeight = element.yPos + element.h;
+            contentHeight = element.posY + element.sizeY;
         }
 
-        if (element.xPos + element.w > contentWidth)
+        if (element.posX + element.sizeX > contentWidth)
         {
-            contentWidth = element.xPos + element.w;
+            contentWidth = element.posX + element.sizeX;
         }
         
         return this;
@@ -39,7 +39,7 @@ public class ElementScrollPanel extends ElementBaseContainer
 
     public boolean isCoordinateVisible(int x, int y)
     {
-        return x >= xPos + parent.guiLeft() && x <= xPos + w + parent.guiLeft() && y >= yPos + parent.guiTop() && y <= yPos + h + parent.guiTop();
+        return x >= posX + parent.guiLeft() && x <= posX + sizeX + parent.guiLeft() && y >= posY + parent.guiTop() && y <= posY + sizeY + parent.guiTop();
     }
 
     @Override
@@ -47,9 +47,9 @@ public class ElementScrollPanel extends ElementBaseContainer
     {
         for (ElementBase element : elements)
         {
-            int X = x + (int) scrollX, Y = y + (int) scrollY, X2 = X + element.xPos, Y2 = Y + element.yPos;
+            int X = x + (int) scrollX, Y = y + (int) scrollY, X2 = X + element.posX, Y2 = Y + element.posY;
 
-            if (element.isVisible() && (isCoordinateVisible(X2, Y2) || isCoordinateVisible(X2 + element.w, Y2) || isCoordinateVisible(X2, Y2 + element.h) || isCoordinateVisible(X2 + element.w, Y2 + element.h)))
+            if (element.isVisible() && (isCoordinateVisible(X2, Y2) || isCoordinateVisible(X2 + element.sizeX, Y2) || isCoordinateVisible(X2, Y2 + element.sizeY) || isCoordinateVisible(X2 + element.sizeX, Y2 + element.sizeY)))
             {
                 element.drawElement(X, Y);
             }
@@ -63,7 +63,7 @@ public class ElementScrollPanel extends ElementBaseContainer
     {
         for (ElementBase element : elements)
         {
-            if (element.isVisible() && element.intersectsWith(parent.guiLeft() + xPos + (int) scrollX, parent.guiTop() + yPos + (int) scrollY))
+            if (element.isVisible() && element.intersectsWith(parent.guiLeft() + posX + (int) scrollX, parent.guiTop() + posY + (int) scrollY))
             {
                 element.mouseClicked(mouseButton);
             }
@@ -80,7 +80,7 @@ public class ElementScrollPanel extends ElementBaseContainer
 
         if (Mouse.isButtonDown(0))
         {
-            if (parent.mouseX() >= parent.guiLeft() + xPos &&  parent.mouseX() <= parent.guiLeft() + xPos + w && parent.mouseY() >= parent.guiTop() + yPos &&  parent.mouseY() <= parent.guiTop() + yPos + h)
+            if (parent.mouseX() >= parent.guiLeft() + posX &&  parent.mouseX() <= parent.guiLeft() + posX + sizeX && parent.mouseY() >= parent.guiTop() + posY &&  parent.mouseY() <= parent.guiTop() + posY + sizeY)
             {
                 if (isMouseButtonDown)
                 {
@@ -114,22 +114,22 @@ public class ElementScrollPanel extends ElementBaseContainer
             scrollY = 0;
         }
 
-        if (contentWidth < w)
+        if (contentWidth < sizeX)
         {
             scrollX = 0;
         }
-        else if (scrollX < -contentWidth + w)
+        else if (scrollX < -contentWidth + sizeX)
         {
-            scrollX = -contentWidth + w;
+            scrollX = -contentWidth + sizeX;
         }
 
-        if (contentHeight < h)
+        if (contentHeight < sizeY)
         {
             scrollY = 0;
         }
-        else if (scrollY < -contentHeight + h)
+        else if (scrollY < -contentHeight + sizeY)
         {
-            scrollY = -contentHeight + h;
+            scrollY = -contentHeight + sizeY;
         }
     }
 
@@ -138,13 +138,13 @@ public class ElementScrollPanel extends ElementBaseContainer
     {
         for (ElementBase element : elements)
         {
-            if (element.intersectsWith(parent.guiLeft() + xPos + (int) scrollX, parent.guiTop() + yPos + (int) scrollY))
+            if (element.intersectsWith(parent.guiLeft() + posX + (int) scrollX, parent.guiTop() + posY + (int) scrollY))
             {
                 if (element instanceof ElementBaseContainer)
                 {
                     for (ElementBase cElement : ((ElementBaseContainer) element).elements)
                     {
-                        if (cElement.intersectsWith(parent.guiLeft() + (int) scrollX + xPos + element.xPos, parent.guiTop() + (int) scrollY + yPos + element.yPos))
+                        if (cElement.intersectsWith(parent.guiLeft() + (int) scrollX + posX + element.posX, parent.guiTop() + (int) scrollY + posY + element.posY))
                         {
                             cElement.getTooltip(list);
                         }

@@ -16,19 +16,19 @@ public class ElementScrollBar extends ElementBase
     {
         super(parent, x, y, w, h);
         panel = scroll;
-        barSize = (int)(((float) scroll.h / (float) scroll.contentHeight) * h);
+        barSize = (int)(((float) scroll.sizeY / (float) scroll.contentHeight) * h);
     }
 
     @Override
     public void draw(int x, int y)
     {
-        if (panel.contentHeight < panel.h)
+        if (panel.contentHeight < panel.sizeY)
         {
             return;
         }
         
-        Gui.drawRect(x, y, x + w, y + h, 0x33000000);
-        Gui.drawRect(x, y + (int) scroll, x + w, y + (int) scroll + barSize, 0x77000000);
+        Gui.drawRect(x, y, x + sizeX, y + sizeY, 0x33000000);
+        Gui.drawRect(x, y + (int) scroll, x + sizeX, y + (int) scroll + barSize, 0x77000000);
     }
 
     @Override
@@ -42,12 +42,12 @@ public class ElementScrollBar extends ElementBase
     {
         if (Mouse.isButtonDown(0))
         {
-            if (parent.mouseX() >= parent.guiLeft() + xPos &&  parent.mouseX() <= parent.guiLeft() + xPos + w && parent.mouseY() >= parent.guiTop() + yPos + (int) scroll &&  parent.mouseY() <= parent.guiTop() + yPos + (int) scroll + barSize)
+            if (parent.mouseX() >= parent.guiLeft() + posX &&  parent.mouseX() <= parent.guiLeft() + posX + sizeX && parent.mouseY() >= parent.guiTop() + posY + (int) scroll &&  parent.mouseY() <= parent.guiTop() + posY + (int) scroll + barSize)
             {
                 if (isMouseButtonDown)
                 {
                     scroll += parent.mouseY() - oldMouse;
-                    panel.scrollY = -(scroll / h * panel.contentHeight);
+                    panel.scrollY = -(scroll / sizeY * panel.contentHeight);
                 }
                 else
                 {
@@ -56,7 +56,7 @@ public class ElementScrollBar extends ElementBase
             }
             else
             {
-                scroll = (-panel.scrollY / panel.contentHeight) * h;
+                scroll = (-panel.scrollY / panel.contentHeight) * sizeY;
             }
             
             oldMouse = parent.mouseY();
@@ -64,7 +64,7 @@ public class ElementScrollBar extends ElementBase
         }
         else
         {
-            scroll = (-panel.scrollY / panel.contentHeight) * h;
+            scroll = (-panel.scrollY / panel.contentHeight) * sizeY;
             isMouseButtonDown = false;
         }
         
@@ -73,9 +73,9 @@ public class ElementScrollBar extends ElementBase
             scroll = 0;
         }
         
-        if (scroll > h - barSize)
+        if (scroll > sizeY - barSize)
         {
-            scroll = h - barSize;
+            scroll = sizeY - barSize;
         }
     }
 }

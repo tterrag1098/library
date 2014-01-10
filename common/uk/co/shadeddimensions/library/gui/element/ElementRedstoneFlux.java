@@ -16,8 +16,8 @@ public class ElementRedstoneFlux extends ElementProgressBar
     public ElementRedstoneFlux(GuiBase parent, int x, int y, int progress, int max)
     {
         super(parent, x, y, progress, max);
-        w = 14;
-        h = 42;
+        sizeX = 14;
+        sizeY = 42;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ElementRedstoneFlux extends ElementProgressBar
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 228, 0, w, h);
+        drawTexturedModalRect(x, y, 228, 0, sizeX, sizeY);
         
         if (!isDisabled())
         {
@@ -33,10 +33,10 @@ public class ElementRedstoneFlux extends ElementProgressBar
 
             if (currentProgress > 0)
             {
-                height = Math.round((float)currentProgress * h / maxProgress);
+                height = Math.round((float)currentProgress * sizeY / maxProgress);
             }
 
-            drawTexturedModalRect(x, y + h - height, 228 + w, h - height, w, height);
+            drawTexturedModalRect(x, y + sizeY - height, 228 + sizeX, sizeY - height, sizeX, height);
         }
     }
 

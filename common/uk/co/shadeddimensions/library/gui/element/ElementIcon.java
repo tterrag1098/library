@@ -16,34 +16,34 @@ public class ElementIcon extends ElementBase
         {
             default:
             case 0:
-                w = h = 18;
+                sizeX = sizeY = 18;
                 break;
                 
             case 1:
                 texU = 18;
-                w = h = 26;
+                sizeX = sizeY = 26;
                 break;
                 
             case 2:
                 texU = 44;
-                w = 22;
-                h = 15;
+                sizeX = 22;
+                sizeY = 15;
                 break;
                 
             case 3:
                 texU = 88;
-                w = 14;
-                h = 13;
+                sizeX = 14;
+                sizeY = 13;
                 break;
                 
             case 4:
                 texU = 116;
-                w = h = 13;
+                sizeX = sizeY = 13;
                 break;
                 
             case 5:
                 texV = 53;
-                w = h = 15;
+                sizeX = sizeY = 15;
                 break;
         }
     }
@@ -65,6 +65,6 @@ public class ElementIcon extends ElementBase
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, texU, texV, w, h);
+        drawTexturedModalRect(x, y, texU, texV, sizeX, sizeY);
     }
 }

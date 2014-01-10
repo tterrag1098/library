@@ -23,8 +23,8 @@ public class ElementPlus extends ElementProgressBar
     public ElementPlus(GuiBase parent, int x, int y, int progress, int max, boolean tooltip, boolean horiz)
     {
         super(parent, x, y, progress, max);
-        w = 13;
-        h = 13;
+        sizeX = 13;
+        sizeY = 13;
         showTooltip = tooltip;
         horizontal = horiz;
     }
@@ -34,7 +34,7 @@ public class ElementPlus extends ElementProgressBar
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 116, 0, w, h);
+        drawTexturedModalRect(x, y, 116, 0, sizeX, sizeY);
         
         if (horizontal)
         {
@@ -42,10 +42,10 @@ public class ElementPlus extends ElementProgressBar
 
             if (currentProgress > 0)
             {
-                width = Math.round((float)currentProgress * w / maxProgress);
+                width = Math.round((float)currentProgress * sizeX / maxProgress);
             }
 
-            drawTexturedModalRect(x, y, 116 + w, 0, width, h);
+            drawTexturedModalRect(x, y, 116 + sizeX, 0, width, sizeY);
         }
         else
         {
@@ -53,10 +53,10 @@ public class ElementPlus extends ElementProgressBar
 
             if (currentProgress > 0)
             {
-                height = Math.round((float)currentProgress * h / maxProgress);
+                height = Math.round((float)currentProgress * sizeY / maxProgress);
             }
 
-            drawTexturedModalRect(x, y + h - height, 116 + w, h - height, w, height);
+            drawTexturedModalRect(x, y + sizeY - height, 116 + sizeX, sizeY - height, sizeX, height);
         }
 
         if (isDisabled())

@@ -10,13 +10,13 @@ public class ElementItemIconWithSlot extends ElementItemIcon
     public ElementItemIconWithSlot(GuiBase parent, int x, int y, ItemStack stack)
     {
         super(parent, x, y, stack);
-        w = h = 18;
+        sizeX = sizeY = 18;
     }
     
     public ElementItemIconWithSlot(GuiBase parent, int x, int y, ItemStack stack, boolean big)
     {
         super(parent, x, y, stack);
-        w = h = big ? 26 : 18;
+        sizeX = sizeY = big ? 26 : 18;
     }
     
     @Override
@@ -24,9 +24,9 @@ public class ElementItemIconWithSlot extends ElementItemIcon
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, w == 18 ? 0 : 18, 0, w, h);
+        drawTexturedModalRect(x, y, sizeX == 18 ? 0 : 18, 0, sizeX, sizeY);
         
-        int buffer = w == 18 ? 1 : 5;
+        int buffer = sizeX == 18 ? 1 : 5;
         parent.drawItemStack(item, x + buffer, y + buffer);
     }
 }
