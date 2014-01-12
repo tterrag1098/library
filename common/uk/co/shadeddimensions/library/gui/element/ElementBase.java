@@ -133,6 +133,8 @@ public abstract class ElementBase
     {
         this.posX = gui.getGuiLeft() + posX;
         this.posY = gui.getGuiTop() + posY;
+        this.relativePosX = posX;
+        this.relativePosY = posY;
 
         return this;
     }

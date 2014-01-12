@@ -8,7 +8,7 @@ import uk.co.shadeddimensions.library.gui.Parser;
 
 public abstract class ElementBaseContainer extends ElementBase
 {
-    ArrayList<ElementBase> elements;
+    protected ArrayList<ElementBase> elements;
 
     public ElementBaseContainer(GuiBase parent, int x, int y, int w, int h)
     {

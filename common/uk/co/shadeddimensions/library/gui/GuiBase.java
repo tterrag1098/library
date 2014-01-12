@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
@@ -97,7 +98,10 @@ public abstract class GuiBase extends GuiContainer
     {
         for (ElementBase element : elements)
         {
-            element.draw();
+            if (element.isVisible())
+            {
+                element.draw();
+            }
         }
     }
 
@@ -118,18 +122,21 @@ public abstract class GuiBase extends GuiContainer
         drawTiledTexture(x, y, fluid.getFluid().getIcon(fluid), width, height);
     }
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int x, int y)
+    protected void drawBackgroundTexture()
     {
-        updateElements();
-
         if (texture != null)
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             mc.renderEngine.bindTexture(texture);
             drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
         }
-
+    }
+    
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float f, int x, int y)
+    {
+        updateElements();
+        drawBackgroundTexture();
         drawElements();
         drawTabs();
     }
@@ -379,7 +386,7 @@ public abstract class GuiBase extends GuiContainer
     {
         for (ElementBase element : elements)
         {
-            if (element.intersectsWith(mX, mY))
+            if (element.isVisible() && element.intersectsWith(mX, mY))
             {
                 return element;
             }
@@ -524,7 +531,7 @@ public abstract class GuiBase extends GuiContainer
 
          TabBase tab = getTabAtPosition(mouseX, mouseY);
 
-         if (tab != null && !tab.handleMouseClicked(mouseX, mouseY, mouseButton))
+         if (tab != null && tab.isVisible() && !tab.handleMouseClicked(mouseX, mouseY, mouseButton))
          {
              for (TabBase other : tabs)
              {
@@ -541,7 +548,10 @@ public abstract class GuiBase extends GuiContainer
 
          if (element != null)
          {
-             element.handleMouseClicked(mouseX, mouseY, mouseButton);
+             if (element.isVisible())
+             {
+                 element.handleMouseClicked(mouseX, mouseY, mouseButton);
+             }
          }
      }
 
@@ -573,4 +583,9 @@ public abstract class GuiBase extends GuiContainer
              element.update();
          }
      }
+
+    public Minecraft getMinecraft()
+    {
+        return mc;
+    }
 }
