@@ -18,7 +18,7 @@ public abstract class ElementBaseContainer extends ElementBase
 
     public ElementBaseContainer parseElements(String string)
     {
-        for (ElementBase element : new Parser(parent).setMaxWidth(sizeX).parse(string))
+        for (ElementBase element : new Parser(gui).setMaxWidth(sizeX).parse(string))
         {
             addElement(element);
         }
@@ -34,49 +34,56 @@ public abstract class ElementBaseContainer extends ElementBase
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         for (ElementBase element : elements)
         {
             if (element.isVisible())
             {
-                element.drawElement(x, y);
-            }
-        }
-    }
-
-    @Override
-    public void mouseClicked(int mouseButton)
-    {
-        for (ElementBase element : elements)
-        {
-            if (element.isVisible() && element.intersectsWith(parent.guiLeft() + posX, parent.guiTop() + posY))
-            {
-                element.mouseClicked(mouseButton);
-            }
-        }
-    }
-
-    @Override
-    protected void update()
-    {
-        for (ElementBase element : elements)
-        {
-            if (element.isVisible())
-            {
-                element.update();
+                element.draw(posX + element.getRelativeX(), posY + element.getRelativeY());
             }
         }
     }
     
     @Override
-    public void getTooltip(List<String> list)
+    public boolean handleMouseClicked(int x, int y, int mouseButton)
     {
         for (ElementBase element : elements)
         {
-            if (element.intersectsWith(parent.guiLeft() + posX, parent.guiTop() + posY))
+            if (element.isVisible() && element.intersectsWith(x, y))
             {
-                element.getTooltip(list);
+                if (element.handleMouseClicked(x, y, mouseButton))
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
+    @Override
+    public void update()
+    {
+        for (ElementBase element : elements)
+        {
+            element.update();
+        }
+    }
+    
+    @Override
+    public void addTooltip(List<String> list)
+    {
+        for (ElementBase element : elements)
+        {
+            if (element.intersectsWith(gui.getMouseX(), gui.getMouseY()))
+            {
+                element.addTooltip(list);
+                
+                if (!list.isEmpty())
+                {
+                    return;
+                }
             }
         }
     }

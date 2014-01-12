@@ -25,7 +25,7 @@ public class ElementItemText extends ElementText
 
     @SuppressWarnings("unchecked")
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         if (item != null)
         {

@@ -49,22 +49,10 @@ public class ElementIcon extends ElementBase
     }
 
     @Override
-    public void mouseClicked(int mouseButton)
-    {
-
-    }
-
-    @Override
-    protected void update()
-    {
-
-    }
-
-    @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, texU, texV, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, texU, texV, sizeX, sizeY);
     }
 }

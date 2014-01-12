@@ -1,18 +1,13 @@
 package uk.co.shadeddimensions.library.gui.slot;
 
+import uk.co.shadeddimensions.library.util.ItemHelper;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-/**
- * Slot which players can only remove items from.
- * 
- * @author King Lemming
- * 
- */
-public class SlotOutput extends Slot
+public class SlotEnergy extends Slot
 {
-    public SlotOutput(IInventory inventory, int x, int y, int z)
+    public SlotEnergy(IInventory inventory, int x, int y, int z)
     {
         super(inventory, x, y, z);
     }
@@ -20,7 +15,6 @@ public class SlotOutput extends Slot
     @Override
     public boolean isItemValid(ItemStack stack)
     {
-
-        return false;
+        return ItemHelper.isEnergyContainerItem(stack);
     }
 }

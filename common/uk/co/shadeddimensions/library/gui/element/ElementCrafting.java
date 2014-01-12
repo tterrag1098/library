@@ -1,8 +1,9 @@
 package uk.co.shadeddimensions.library.gui.element;
 
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.item.ItemStack;
 import uk.co.shadeddimensions.library.gui.GuiBase;
 
 public class ElementCrafting extends ElementBaseContainer
@@ -54,19 +55,6 @@ public class ElementCrafting extends ElementBaseContainer
             elements.add(new ElementBubbles(parent, 10, 0, 100));
             elements.add(new ElementDownArrow(parent, 43, 2, 1000));
         }
-    }
-
-    @Override
-    public void draw(int x, int y)
-    {
-        if (type == 2)
-        {
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            parent.textureManager().bindTexture(texture);
-            drawTexturedModalRect(x, y, 146, 0, sizeX, sizeY);
-        }
-        
-        super.draw(x, y);
     }
     
     public ElementCrafting addAllGridSlots(ItemStack[] stacks)
@@ -130,5 +118,18 @@ public class ElementCrafting extends ElementBaseContainer
         }
         
         return this;
+    }
+
+    @Override
+    public void draw()
+    {
+        if (type == 2)
+        {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            gui.getTextureManager().bindTexture(texture);
+            drawTexturedModalRect(posX, posY, 146, 0, sizeX, sizeY);
+        }
+        
+        super.draw();
     }
 }

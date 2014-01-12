@@ -20,13 +20,13 @@ public class ElementItemIconWithSlot extends ElementItemIcon
     }
     
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, sizeX == 18 ? 0 : 18, 0, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, sizeX == 18 ? 0 : 18, 0, sizeX, sizeY);
         
         int buffer = sizeX == 18 ? 1 : 5;
-        parent.drawItemStack(item, x + buffer, y + buffer);
+        gui.drawItemStack(item, posX + buffer, posY + buffer);
     }
 }

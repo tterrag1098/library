@@ -16,31 +16,32 @@ public class SlotSpecificItem extends Slot
     final ComparableItemStack stack;
     int slotStackLimit = -1;
 
-    public SlotSpecificItem(IInventory inventory, int slotIndex, int x, int y, ItemStack stack) {
+    public SlotSpecificItem(IInventory inventory, int slotIndex, int x, int y, ItemStack stack)
+    {
+        super(inventory, slotIndex, x, y);
 
-            super(inventory, slotIndex, x, y);
-
-            this.stack = new ComparableItemStack(stack);
+        this.stack = new ComparableItemStack(stack);
     }
 
     @Override
-    public boolean isItemValid(ItemStack stack) {
-
-            return this.stack.isItemEqual(new ComparableItemStack(stack));
-    }
-
-    public SlotSpecificItem setSlotStackLimit(int slotStackLimit) {
-
-            this.slotStackLimit = slotStackLimit;
-            return this;
+    public int getSlotStackLimit()
+    {
+        if (slotStackLimit <= 0)
+        {
+            return inventory.getInventoryStackLimit();
+        }
+        return slotStackLimit;
     }
 
     @Override
-    public int getSlotStackLimit() {
+    public boolean isItemValid(ItemStack stack)
+    {
+        return this.stack.isItemEqual(new ComparableItemStack(stack));
+    }
 
-            if (slotStackLimit <= 0) {
-                    return this.inventory.getInventoryStackLimit();
-            }
-            return slotStackLimit;
+    public SlotSpecificItem setSlotStackLimit(int slotStackLimit)
+    {
+        this.slotStackLimit = slotStackLimit;
+        return this;
     }
 }

@@ -24,14 +24,14 @@ public class ElementScrollPanel extends ElementBaseContainer
     {
         super.addElement(element);
 
-        if (element.posY + element.sizeY > contentHeight)
+        if (element.getRelativeY() + element.getHeight() > contentHeight)
         {
-            contentHeight = element.posY + element.sizeY;
+            contentHeight = element.getRelativeY() + element.getHeight();
         }
 
-        if (element.posX + element.sizeX > contentWidth)
+        if (element.getRelativeX() + element.getWidth() > contentWidth)
         {
-            contentWidth = element.posX + element.sizeX;
+            contentWidth = element.getRelativeX() + element.getWidth();
         }
         
         return this;
@@ -39,19 +39,19 @@ public class ElementScrollPanel extends ElementBaseContainer
 
     public boolean isCoordinateVisible(int x, int y)
     {
-        return x >= posX + parent.guiLeft() && x <= posX + sizeX + parent.guiLeft() && y >= posY + parent.guiTop() && y <= posY + sizeY + parent.guiTop();
+        return x >= posX + gui.getGuiLeft() && x <= posX + sizeX + gui.getGuiLeft() && y >= posY + gui.getGuiTop() && y <= posY + sizeY + gui.getGuiTop();
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         for (ElementBase element : elements)
         {
-            int X = x + (int) scrollX, Y = y + (int) scrollY, X2 = X + element.posX, Y2 = Y + element.posY;
-
-            if (element.isVisible() && (isCoordinateVisible(X2, Y2) || isCoordinateVisible(X2 + element.sizeX, Y2) || isCoordinateVisible(X2, Y2 + element.sizeY) || isCoordinateVisible(X2 + element.sizeX, Y2 + element.sizeY)))
+            int x = posX + (int) scrollX + element.getRelativeX(), y = posY + (int) scrollY + element.getRelativeY();
+            
+            if (element.isVisible() && (isCoordinateVisible(x + gui.getGuiLeft(), y + gui.getGuiTop()) || isCoordinateVisible(x + gui.getGuiLeft() + element.getWidth(), y + gui.getGuiTop() + element.getHeight())))
             {
-                element.drawElement(X, Y);
+                element.draw(x, y);
             }
         }
         
@@ -59,33 +59,40 @@ public class ElementScrollPanel extends ElementBaseContainer
     }
 
     @Override
-    public void mouseClicked(int mouseButton)
+    public boolean handleMouseClicked(int x, int y, int mouseButton)
     {
         for (ElementBase element : elements)
         {
-            if (element.isVisible() && element.intersectsWith(parent.guiLeft() + posX + (int) scrollX, parent.guiTop() + posY + (int) scrollY))
+            if (element.isVisible() && element.intersectsWith(x, y))
             {
-                element.mouseClicked(mouseButton);
+                if (element.handleMouseClicked(x, y, mouseButton))
+                {
+                    return true;
+                }
             }
         }
+        
+        return false;
     }
-
+    
     @Override
-    protected void update()
+    public void update()
     {
         for (ElementBase element : elements)
         {
             element.update();
         }
+        
+        int mouseX = gui.getMouseX() + gui.getGuiLeft(), mouseY = gui.getMouseY() + gui.getGuiTop();
 
         if (Mouse.isButtonDown(0))
         {
-            if (parent.mouseX() >= parent.guiLeft() + posX &&  parent.mouseX() <= parent.guiLeft() + posX + sizeX && parent.mouseY() >= parent.guiTop() + posY &&  parent.mouseY() <= parent.guiTop() + posY + sizeY)
+            if (mouseX >= posX &&  mouseX <= posX + sizeX && mouseY >= posY &&  mouseY <= posY + sizeY)
             {
                 if (isMouseButtonDown)
                 {
-                    scrollX += parent.mouseX() - oldMouseX;
-                    scrollY += parent.mouseY() - oldMouseY;
+                    scrollX += mouseX - oldMouseX;
+                    scrollY += mouseY - oldMouseY;
                 }
                 else
                 {
@@ -93,8 +100,8 @@ public class ElementScrollPanel extends ElementBaseContainer
                 }
             }
             
-            oldMouseX = parent.mouseX();
-            oldMouseY = parent.mouseY();
+            oldMouseX = mouseX;
+            oldMouseY = mouseY;
         }
         else
         {
@@ -134,25 +141,19 @@ public class ElementScrollPanel extends ElementBaseContainer
     }
 
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         for (ElementBase element : elements)
         {
-            if (element.intersectsWith(parent.guiLeft() + posX + (int) scrollX, parent.guiTop() + posY + (int) scrollY))
+            int x = posX + (int) scrollX + element.getRelativeX(), y = posY + (int) scrollY + element.getRelativeY();
+            
+            if (element.isVisible() && (isCoordinateVisible(x + gui.getGuiLeft(), y + gui.getGuiTop()) || isCoordinateVisible(x + gui.getGuiLeft() + element.getWidth(), y + gui.getGuiTop() + element.getHeight())))
             {
-                if (element instanceof ElementBaseContainer)
+                element.addTooltip(list);
+                
+                if (!list.isEmpty())
                 {
-                    for (ElementBase cElement : ((ElementBaseContainer) element).elements)
-                    {
-                        if (cElement.intersectsWith(parent.guiLeft() + (int) scrollX + posX + element.posX, parent.guiTop() + (int) scrollY + posY + element.posY))
-                        {
-                            cElement.getTooltip(list);
-                        }
-                    }
-                }
-                else
-                {
-                    element.getTooltip(list);
+                    return;
                 }
             }
         }

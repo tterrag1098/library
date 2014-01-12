@@ -52,11 +52,11 @@ public class ElementProgressBar extends ElementBase
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 44, 18, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, 44, 18, sizeX, sizeY);
         
         int width = 0;
 
@@ -65,17 +65,11 @@ public class ElementProgressBar extends ElementBase
             width = Math.round((float)currentProgress * sizeX / maxProgress);
         }
 
-        drawTexturedModalRect(x, y, 44, 18 + 4, width, sizeY);
+        drawTexturedModalRect(posX, posY, 44, 18 + 4, width, sizeY);
     }
 
     @Override
-    public void mouseClicked(int mouseButton)
-    {
-
-    }
-
-    @Override
-    protected void update()
+    public void update()
     {
         incrementProgress(1);
 
@@ -85,7 +79,8 @@ public class ElementProgressBar extends ElementBase
         }
     }
 
-    public void getTooltip(List<String> list)
+    @Override
+    public void addTooltip(List<String> list)
     {
         list.add(currentProgress + " / " + maxProgress);
     }

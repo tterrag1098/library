@@ -23,26 +23,14 @@ public class ElementItemIcon extends ElementBase
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
-        parent.drawItemStack(item, x, y);
-    }
-
-    @Override
-    public void mouseClicked(int mouseButton)
-    {
-
-    }
-
-    @Override
-    protected void update()
-    {
-
+        gui.drawItemStack(item, posX, posY);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         if (item != null)
         {

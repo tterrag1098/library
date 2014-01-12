@@ -29,11 +29,11 @@ public class ElementBubbles extends ElementProgressBar
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 16, 26, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, 16, 26, sizeX, sizeY);
         
         if (!isDisabled())
         {
@@ -44,16 +44,16 @@ public class ElementBubbles extends ElementProgressBar
                 height = Math.round((float)currentProgress * sizeY / maxProgress);
             }
 
-            drawTexturedModalRect(x, y + sizeY - height, 16 + sizeX, 26 + sizeY - height, sizeX + 1, height);
+            drawTexturedModalRect(posX, posY + sizeY - height, 16 + sizeX, 26 + sizeY - height, sizeX + 1, height);
         }
     }
 
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         if (showTooltip)
         {
-            super.getTooltip(list);
+            super.addTooltip(list);
         }
     }
 }

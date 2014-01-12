@@ -17,7 +17,7 @@ public class ElementText extends ElementBase
     
     public ElementText(GuiBase parent, int x, int y, String text, String hover, int c, boolean s)
     {
-        super(parent, x, y, parent.fontRenderer().getStringWidth(text), parent.fontRenderer().FONT_HEIGHT);
+        super(parent, x, y, parent.getFontRenderer().getStringWidth(text), parent.getFontRenderer().FONT_HEIGHT);
         displayText = text;
         hoverText = hover;
         colour = c;
@@ -25,36 +25,24 @@ public class ElementText extends ElementBase
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         if (shadow)
         {
-            parent.fontRenderer().drawStringWithShadow(displayText, x, y, colour);
+            gui.getFontRenderer().drawStringWithShadow(displayText, posX, posY, colour);
         }
         else
         {
-            parent.fontRenderer().drawString(displayText, x, y, colour);
+            gui.getFontRenderer().drawString(displayText, posX, posY, colour);
         }
-    }
-
-    @Override
-    public void mouseClicked(int mouseButton)
-    {
-
     }
     
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         if (hoverText != null)
         {
             list.add(hoverText);
         }
-    }
-
-    @Override
-    protected void update()
-    {
-
     }
 }

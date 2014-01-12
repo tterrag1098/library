@@ -1,7 +1,5 @@
 package uk.co.shadeddimensions.library.gui.element;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
@@ -25,37 +23,26 @@ public class ElementButton extends ElementBase
         this(parent, x, y, w, id, text, null);
     }
     
-    public void draw(int x, int y)
-    {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 0, 196 + (!isDisabled() ? intersectsWith(x, y) ? sizeY * 2 : sizeY : 0), sizeX / 2, sizeY);
-        drawTexturedModalRect(x + sizeX / 2, y, 200 - sizeX / 2, 196 + (!isDisabled() ? intersectsWith(x, y) ? sizeY * 2 : sizeY : 0), sizeX / 2, sizeY);
-        parent.fontRenderer().drawStringWithShadow(displayText, x + (sizeX / 2 - parent.fontRenderer().getStringWidth(displayText) / 2), y + (sizeY / 2 - parent.fontRenderer().FONT_HEIGHT / 2), (!isDisabled() ? intersectsWith(x + parent.guiLeft(), y + parent.guiTop()) ? 16777120 : 14737632 : -6250336));
-    }
-
     @Override
-    public void mouseClicked(int mouseButton)
+    public boolean handleMouseClicked(int x, int y, int mouseButton)
     {
         if (!isDisabled() && isVisible())
         {
             Minecraft.getMinecraft().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
-            parent.buttonClicked(ID, mouseButton);
+            gui.handleElementButtonClick(ID, mouseButton);
+            return true;
         }
-    }
-
-    @Override
-    protected void update()
-    {
-
+        
+        return false;
     }
     
     @Override
-    public void getTooltip(List<String> list)
+    public void draw()
     {
-        if (hoverText != null)
-        {
-            list.add(hoverText);
-        }
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, 0, 196 + (!isDisabled() ? intersectsWith(gui.getMouseX(), gui.getMouseY()) ? sizeY * 2 : sizeY : 0), sizeX / 2, sizeY);
+        drawTexturedModalRect(posX + sizeX / 2, posY, 200 - sizeX / 2, 196 + (!isDisabled() ? intersectsWith(gui.getMouseX(), gui.getMouseY()) ? sizeY * 2 : sizeY : 0), sizeX / 2, sizeY);
+        gui.getFontRenderer().drawStringWithShadow(displayText, posX + (sizeX / 2 - gui.getFontRenderer().getStringWidth(displayText) / 2), posY + (sizeY / 2 - gui.getFontRenderer().FONT_HEIGHT / 2), (!isDisabled() ? intersectsWith(gui.getMouseX(), gui.getMouseY()) ? 16777120 : 14737632 : -6250336));
     }
 }

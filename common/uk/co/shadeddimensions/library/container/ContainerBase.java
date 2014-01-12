@@ -3,10 +3,11 @@ package uk.co.shadeddimensions.library.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 public class ContainerBase extends Container
 {
-    Object object;
+    public Object object;
     
     public ContainerBase()
     {
@@ -33,5 +34,11 @@ public class ContainerBase extends Container
     public String getUnlocalizedName()
     {
         return "container.empty";
+    }
+    
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    {
+        return null;
     }
 }

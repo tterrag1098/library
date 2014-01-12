@@ -29,11 +29,11 @@ public class ElementFire extends ElementProgressBar
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 88, 0, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, 88, 0, sizeX, sizeY);
         
         int height = 0;
 
@@ -42,20 +42,20 @@ public class ElementFire extends ElementProgressBar
             height = Math.round((float)currentProgress * sizeY / maxProgress);
         }
 
-        drawTexturedModalRect(x, y + height, 88 + sizeX, height, sizeX, sizeY);
+        drawTexturedModalRect(posX, posY + height, 88 + sizeX, height, sizeX, sizeY);
 
         if (isDisabled())
         {
-            drawTexturedModalRect(x, y, 0, 53, 15, 15);
+            drawTexturedModalRect(posX, posY, 0, 53, 15, 15);
         }
     }
 
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         if (showTooltip)
         {
-            super.getTooltip(list);
+            super.addTooltip(list);
         }
     }
 }

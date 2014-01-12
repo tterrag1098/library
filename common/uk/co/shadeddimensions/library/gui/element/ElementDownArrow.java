@@ -29,11 +29,11 @@ public class ElementDownArrow extends ElementProgressBar
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 0, 26, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, 0, 26, sizeX, sizeY);
         
         if (!isDisabled())
         {
@@ -44,16 +44,16 @@ public class ElementDownArrow extends ElementProgressBar
                 height = Math.round((float)currentProgress * sizeY / maxProgress);
             }
 
-            drawTexturedModalRect(x, y, sizeX, 26, sizeX, height);
+            drawTexturedModalRect(posX, posY, sizeX, 26, sizeX, height);
         }
     }
 
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         if (showTooltip)
         {
-            super.getTooltip(list);
+            super.addTooltip(list);
         }
     }
 }

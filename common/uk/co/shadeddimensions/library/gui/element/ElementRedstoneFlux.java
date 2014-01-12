@@ -21,11 +21,11 @@ public class ElementRedstoneFlux extends ElementProgressBar
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 228, 0, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, 228, 0, sizeX, sizeY);
         
         if (!isDisabled())
         {
@@ -36,14 +36,14 @@ public class ElementRedstoneFlux extends ElementProgressBar
                 height = Math.round((float)currentProgress * sizeY / maxProgress);
             }
 
-            drawTexturedModalRect(x, y + sizeY - height, 228 + sizeX, sizeY - height, sizeX, height);
+            drawTexturedModalRect(posX, posY + sizeY - height, 228 + sizeX, sizeY - height, sizeX, height);
         }
     }
 
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
-        super.getTooltip(list);
+        super.addTooltip(list);
 
         list.set(0, list.get(0) + " RF");
     }

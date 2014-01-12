@@ -29,11 +29,11 @@ public class ElementRightArrow extends ElementProgressBar
     }
 
     @Override
-    public void draw(int x, int y)
+    public void draw()
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        parent.textureManager().bindTexture(texture);
-        drawTexturedModalRect(x, y, 44, 0, sizeX, sizeY);
+        gui.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(posX, posY, 44, 0, sizeX, sizeY);
         
         int width = 0;
 
@@ -42,20 +42,20 @@ public class ElementRightArrow extends ElementProgressBar
             width = Math.round((float)currentProgress * sizeX / maxProgress);
         }
 
-        drawTexturedModalRect(x, y, 44 + sizeX, 0, width, sizeY);
+        drawTexturedModalRect(posX, posY, 44 + sizeX, 0, width, sizeY);
 
         if (isDisabled())
         {
-            drawTexturedModalRect(x + 3, y, 0, 53, 15, 15);
+            drawTexturedModalRect(posX + 3, posY, 0, 53, 15, 15);
         }
     }
 
     @Override
-    public void getTooltip(List<String> list)
+    public void addTooltip(List<String> list)
     {
         if (showTooltip)
         {
-            super.getTooltip(list);
+            super.addTooltip(list);
         }
     }
 }
