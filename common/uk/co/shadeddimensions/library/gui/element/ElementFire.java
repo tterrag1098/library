@@ -40,9 +40,10 @@ public class ElementFire extends ElementProgressBar
         if (currentProgress > 0)
         {
             height = Math.round((float)currentProgress * sizeY / maxProgress);
+            height = height == 14 ? 13 : height;
         }
 
-        drawTexturedModalRect(posX, posY + height, 88 + sizeX, height, sizeX, sizeY);
+        drawTexturedModalRect(posX, posY + height, 88 + sizeX, height, sizeX, sizeY - height);
 
         if (isDisabled())
         {

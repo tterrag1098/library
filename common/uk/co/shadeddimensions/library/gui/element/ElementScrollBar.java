@@ -67,6 +67,11 @@ public class ElementScrollBar extends ElementBase
             isMouseButtonDown = false;
         }
         
+        if (!isMouseButtonDown)
+        {
+            scroll = (-panel.scrollY / panel.contentHeight) * sizeY;
+        }
+        
         oldMouse = gui.getMouseY();
 
         if (scroll < 0)
