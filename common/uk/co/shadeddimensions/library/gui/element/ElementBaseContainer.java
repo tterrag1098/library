@@ -32,6 +32,11 @@ public abstract class ElementBaseContainer extends ElementBase
         
         return this;
     }
+    
+    public void clear()
+    {
+        elements.clear();
+    }
 
     @Override
     public void draw()

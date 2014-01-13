@@ -48,10 +48,11 @@ public class ElementItemStackPanel extends ElementBaseContainer
             if (element.intersectsWith(gui.getMouseX(), gui.getMouseY()))
             {
                 element.addTooltip(list);
+                ElementItemIconWithCount el = ((ElementItemIconWithCount) element);
                 
-                if (!list.isEmpty())
+                if (!list.isEmpty() && el.item.stackSize > 1)
                 {
-                    list.set(0, ((ElementItemIconWithCount) element).item.stackSize + "x " + list.get(0));
+                    list.set(0, el.item.stackSize + "x " + list.get(0));
                     return;
                 }
             }

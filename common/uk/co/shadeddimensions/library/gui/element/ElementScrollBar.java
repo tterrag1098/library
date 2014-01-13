@@ -16,7 +16,6 @@ public class ElementScrollBar extends ElementBase
     {
         super(parent, x, y, w, h);
         panel = scroll;
-        barSize = (int)(((float) scroll.sizeY / (float) scroll.contentHeight) * h);
     }
 
     @Override
@@ -26,14 +25,22 @@ public class ElementScrollBar extends ElementBase
         {
             return;
         }
-
+        
+        int scr = Math.min(sizeY - barSize - 1, (int) scroll);
         Gui.drawRect(posX, posY, posX + sizeX, posY + sizeY - 1, 0x33000000);
-        Gui.drawRect(posX, posY + (int) scroll, posX + sizeX, posY + (int) scroll + barSize, 0x77000000);
+        Gui.drawRect(posX, posY + scr, posX + sizeX, posY + scr + barSize, 0x77000000);
     }
 
     @Override
     public void update()
     {
+        if (panel.contentHeight < panel.sizeY)
+        {
+            return;
+        }
+        
+        barSize = (int)(((float) panel.sizeY / (float) panel.contentHeight) * sizeY);
+        
         if (Mouse.isButtonDown(0))
         {
             if (intersectsWith(gui.getMouseX(), gui.getMouseY()))
@@ -53,9 +60,9 @@ public class ElementScrollBar extends ElementBase
                     scroll = 0;
                 }
 
-                if (scroll > sizeY - barSize - 1)
+                if (scroll > sizeY - barSize)
                 {
-                    scroll = sizeY - barSize - 1;
+                    scroll = sizeY - barSize;
                 }
 
                 panel.scrollY = -(scroll / sizeY * panel.contentHeight);

@@ -147,7 +147,7 @@ public class ElementScrollPanel extends ElementBaseContainer
         {
             int x = posX + (int) scrollX + element.getRelativeX(), y = posY + (int) scrollY + element.getRelativeY();
             
-            if (element.isVisible() && (isCoordinateVisible(x + gui.getGuiLeft(), y + gui.getGuiTop()) || isCoordinateVisible(x + gui.getGuiLeft() + element.getWidth(), y + gui.getGuiTop() + element.getHeight())))
+            if (element.isVisible() && element.intersectsWith(gui.getMouseX(), gui.getMouseY()) && (isCoordinateVisible(x + gui.getGuiLeft(), y + gui.getGuiTop()) || isCoordinateVisible(x + gui.getGuiLeft() + element.getWidth(), y + gui.getGuiTop() + element.getHeight())))
             {
                 element.addTooltip(list);
                 
@@ -157,5 +157,14 @@ public class ElementScrollPanel extends ElementBaseContainer
                 }
             }
         }
+    }
+    
+    @Override
+    public void clear()
+    {
+        super.clear();
+        contentHeight = 0;
+        contentWidth = 0;
+        scrollX = scrollY = 0f;
     }
 }

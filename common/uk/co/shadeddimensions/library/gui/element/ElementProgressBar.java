@@ -8,7 +8,7 @@ import uk.co.shadeddimensions.library.gui.GuiBase;
 
 public class ElementProgressBar extends ElementBase
 {
-    protected int currentProgress, maxProgress;
+    protected int currentProgress, maxProgress, autoIncrement;
 
     public ElementProgressBar(GuiBase parent, int x, int y, int max)
     {
@@ -22,33 +22,58 @@ public class ElementProgressBar extends ElementBase
         maxProgress = max;
     }
 
-    public void incrementProgress(int progress)
+    public ElementProgressBar setAutoIncrement(int amount)
+    {
+        autoIncrement = amount;
+        
+        return this;
+    }
+    
+    public ElementProgressBar incrementProgress(int progress)
     {
         if (!isDisabled())
         {
             currentProgress += progress;
         }
+        
+        return this;
     }
 
-    public void decrementProgress(int progress)
+    public ElementProgressBar decrementProgress(int progress)
     {
         if (!isDisabled())
         {
             currentProgress -= progress;
         }
+        
+        return this;
     }
 
-    public void setProgress(int progress)
+    public ElementProgressBar setProgress(int progress)
     {
         if (!isDisabled())
         {
             currentProgress = progress;
         }
+
+        return this;
     }
 
-    public void setMaximum(int max)
+    public ElementProgressBar setMaximum(int max)
     {
         maxProgress = max;
+
+        return this;
+    }
+    
+    public int getMaximum()
+    {
+        return maxProgress;
+    }
+    
+    public int getProgress()
+    {
+        return currentProgress;
     }
 
     @Override
@@ -71,11 +96,14 @@ public class ElementProgressBar extends ElementBase
     @Override
     public void update()
     {
-        incrementProgress(1);
-
-        if (currentProgress > maxProgress)
+        if (autoIncrement > 0)
         {
-            setProgress(0);
+            incrementProgress(autoIncrement);
+    
+            if (currentProgress > maxProgress)
+            {
+                setProgress(0);
+            }
         }
     }
 

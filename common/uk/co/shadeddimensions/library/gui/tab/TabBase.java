@@ -1,5 +1,6 @@
 package uk.co.shadeddimensions.library.gui.tab;
 
+import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -18,7 +19,7 @@ public abstract class TabBase extends ElementBase
 {
     public static int tabExpandSpeed = 8;
 
-    public boolean open;
+    public boolean open, drawName = true;
     public int side = 1;
 
     public int backgroundColor = 0xffffff;
@@ -37,6 +38,9 @@ public abstract class TabBase extends ElementBase
     public static final ResourceLocation DEFAULT_TEXTURE_LEFT = new ResourceLocation("alzlib", "textures/gui/tabLeft.png");
     public static final ResourceLocation DEFAULT_TEXTURE_RIGHT = new ResourceLocation("alzlib", "textures/gui/tabRight.png");
 
+    public int titleColour = 0xFFFFFF;
+    public Icon icon;
+    
     public TabBase(GuiBase gui)
     {
         super(gui, 0, 0);
@@ -187,6 +191,24 @@ public abstract class TabBase extends ElementBase
         if (open && currentWidth == maxWidth && currentHeight == maxHeight)
         {
             setFullyOpen();
+        }
+    }
+    
+    @Override
+    public void draw()
+    {
+        drawBackground();
+        
+        if (icon != null)
+        {
+            int offsetX = side == 0 ? 4 - currentWidth : 2;
+            gui.drawIcon(icon, posX + offsetX, posY + 3, 1);
+        }
+        
+        if (isFullyOpened() && drawName)
+        {
+            int offsetX = side == 0 ? 22 - currentWidth : 22;
+            gui.getFontRenderer().drawStringWithShadow(name, posX + offsetX, posY + 7, titleColour);
         }
     }
 }

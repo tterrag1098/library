@@ -502,8 +502,8 @@ public abstract class GuiBase extends GuiContainer
         tabs.clear();
         elements.clear();
 
-        addTabs();
         addElements();
+        addTabs();
     }
 
     public void addElements()
