@@ -92,4 +92,9 @@ public abstract class ElementBaseContainer extends ElementBase
             }
         }
     }
+    
+    public ArrayList<ElementBase> getElements()
+    {
+        return elements;
+    }
 }

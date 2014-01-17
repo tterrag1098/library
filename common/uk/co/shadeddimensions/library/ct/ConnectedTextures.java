@@ -160,7 +160,7 @@ public class ConnectedTextures
         }
         else if ((connectingBlock[0] & connectingBlock[1] & connectingBlock[2] & !connectingBlock[3]) != false)
         {
-            index = 8;
+            index = 6;
         }
         else if ((connectingBlock[0] & connectingBlock[1] & connectingBlock[2] & connectingBlock[3]) != false)
         {

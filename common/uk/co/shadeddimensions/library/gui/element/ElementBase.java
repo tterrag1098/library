@@ -1,5 +1,6 @@
 package uk.co.shadeddimensions.library.gui.element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.audio.SoundManager;
@@ -26,6 +27,7 @@ public abstract class ElementBase
     protected String name;
 
     protected boolean visible = true, disabled = false;
+    protected ArrayList<String> hoverText;
 
     public ElementBase(GuiBase gui, int posX, int posY)
     {

@@ -39,7 +39,7 @@ public class ElementScrollPanel extends ElementBaseContainer
 
     public boolean isCoordinateVisible(int x, int y)
     {
-        return x >= posX + gui.getGuiLeft() && x <= posX + sizeX + gui.getGuiLeft() && y >= posY + gui.getGuiTop() && y <= posY + sizeY + gui.getGuiTop();
+        return x > posX + gui.getGuiLeft() && x < posX + sizeX + gui.getGuiLeft() && y > posY + gui.getGuiTop() && y < posY + sizeY + gui.getGuiTop();
     }
 
     @Override
@@ -78,6 +78,11 @@ public class ElementScrollPanel extends ElementBaseContainer
     @Override
     public void update()
     {
+        if (!isVisible() || isDisabled())
+        {
+            return;
+        }
+        
         for (ElementBase element : elements)
         {
             element.update();

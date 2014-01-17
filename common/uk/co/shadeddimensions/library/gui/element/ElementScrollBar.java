@@ -21,11 +21,6 @@ public class ElementScrollBar extends ElementBase
     @Override
     public void draw()
     {
-        if (panel.contentHeight < panel.sizeY)
-        {
-            return;
-        }
-        
         int scr = Math.min(sizeY - barSize - 1, (int) scroll);
         Gui.drawRect(posX, posY, posX + sizeX, posY + sizeY - 1, 0x33000000);
         Gui.drawRect(posX, posY + scr, posX + sizeX, posY + scr + barSize, 0x77000000);
@@ -34,7 +29,7 @@ public class ElementScrollBar extends ElementBase
     @Override
     public void update()
     {
-        if (panel.contentHeight < panel.sizeY)
+        if (panel.contentHeight < panel.sizeY || !isVisible() || isDisabled())
         {
             return;
         }
@@ -90,5 +85,19 @@ public class ElementScrollBar extends ElementBase
         {
             scroll = sizeY - barSize;
         }
+    }
+    
+    @Override
+    public boolean isVisible()
+    {
+        visible = panel.isVisible();
+        return super.isVisible();
+    }
+    
+    @Override
+    public boolean isDisabled()
+    {
+        disabled = panel.isDisabled();
+        return super.isDisabled();
     }
 }

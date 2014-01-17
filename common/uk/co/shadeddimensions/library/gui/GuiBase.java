@@ -27,6 +27,7 @@ import org.lwjgl.opengl.GL12;
 
 import uk.co.shadeddimensions.library.container.ContainerBase;
 import uk.co.shadeddimensions.library.gui.element.ElementBase;
+import uk.co.shadeddimensions.library.gui.element.ElementFakeItemSlot;
 import uk.co.shadeddimensions.library.gui.slot.SlotFalseCopy;
 import uk.co.shadeddimensions.library.gui.tab.TabBase;
 
@@ -167,7 +168,7 @@ public abstract class GuiBase extends GuiContainer
         
         ElementBase element = getElementAtPosition(x - guiLeft, y - guiTop);
 
-        if (element != null)
+        if (element != null && !element.isDisabled())
         {
             List<String> list = new ArrayList<String>();
             element.addTooltip(list);
@@ -476,10 +477,20 @@ public abstract class GuiBase extends GuiContainer
     {
         return mc.renderEngine;
     }
+    
+    public boolean isItemStackAllowedInFakeSlot(ElementFakeItemSlot slot, ItemStack stack)
+    {
+        return true;
+    }
 
     public void handleElementButtonClick(String buttonName, int mouseButton)
     {
 
+    }
+    
+    public void handleElementFakeSlotItemChange(ElementFakeItemSlot slot)
+    {
+        
     }
 
     @Override
@@ -501,6 +512,7 @@ public abstract class GuiBase extends GuiContainer
 
         tabs.clear();
         elements.clear();
+        buttonList.clear();
 
         addElements();
         addTabs();

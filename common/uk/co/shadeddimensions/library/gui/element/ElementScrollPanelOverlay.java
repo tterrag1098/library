@@ -1,8 +1,9 @@
 package uk.co.shadeddimensions.library.gui.element;
 
+import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.util.ResourceLocation;
 import uk.co.shadeddimensions.library.gui.GuiBase;
 
 public class ElementScrollPanelOverlay extends ElementScrollPanel

@@ -1,5 +1,6 @@
 package uk.co.shadeddimensions.library.gui.tab;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
@@ -40,6 +41,8 @@ public abstract class TabBase extends ElementBase
 
     public int titleColour = 0xFFFFFF;
     public Icon icon;
+    public ItemStack stack;
+    public String ID;
     
     public TabBase(GuiBase gui)
     {
@@ -203,6 +206,11 @@ public abstract class TabBase extends ElementBase
         {
             int offsetX = side == 0 ? 4 - currentWidth : 2;
             gui.drawIcon(icon, posX + offsetX, posY + 3, 1);
+        }
+        else if (stack != null)
+        {
+            int offsetX = side == 0 ? 4 - currentWidth : 2;
+            gui.drawItemStack(stack, posX + offsetX, posY + 3);
         }
         
         if (isFullyOpened() && drawName)

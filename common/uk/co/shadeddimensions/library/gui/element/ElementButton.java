@@ -1,5 +1,6 @@
 package uk.co.shadeddimensions.library.gui.element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -10,19 +11,25 @@ import uk.co.shadeddimensions.library.gui.GuiBase;
 
 public class ElementButton extends ElementBase
 {
-    protected String ID, displayText, hoverText;
+    protected String ID, displayText, hoverString;
 
     public ElementButton(GuiBase parent, int x, int y, int w, String id, String text, String hover)
     {
         super(parent, x, y, w, 20);
         ID = id;
         displayText = text;
-        hoverText = hover;
+        hoverString = hover;
     }
     
     public ElementButton(GuiBase parent, int x, int y, int w, String id, String text)
     {
-        this(parent, x, y, w, id, text, null);
+        this(parent, x, y, w, id, text, "");
+    }
+    
+    public ElementButton(GuiBase parent, int x, int y, int w, String id, String text, ArrayList<String> hover)
+    {
+        this(parent, x, y, w, id, text, "");
+        hoverText = hover;
     }
     
     @Override
@@ -36,6 +43,11 @@ public class ElementButton extends ElementBase
         }
         
         return false;
+    }
+    
+    public String getID()
+    {
+        return ID;
     }
     
     @Override
@@ -57,7 +69,19 @@ public class ElementButton extends ElementBase
     {
         if (hoverText != null)
         {
-            list.add(hoverText);
+            for (String s : hoverText)
+            {
+                list.add(s);
+            }
         }
+        else if (hoverString != null && hoverString.length() > 0)
+        {
+            list.add(hoverString);
+        }
+    }
+
+    public void setText(String string)
+    {
+        displayText = string;
     }
 }
