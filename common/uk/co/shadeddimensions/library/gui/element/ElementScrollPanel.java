@@ -41,6 +41,32 @@ public class ElementScrollPanel extends ElementBaseContainer
     {
         return x > posX + gui.getGuiLeft() && x < posX + sizeX + gui.getGuiLeft() && y > posY + gui.getGuiTop() && y < posY + sizeY + gui.getGuiTop();
     }
+    
+    public boolean isElementVisible(ElementBase element)
+    {
+        int x = posX + (int) scrollX + element.getRelativeX(), y = posY + (int) scrollY + element.getRelativeY();
+        
+        if (isCoordinateVisible(x + gui.getGuiLeft(), y + gui.getGuiTop()))
+        {
+            return true;
+        }
+        else if (isCoordinateVisible(x + element.getWidth() + gui.getGuiLeft(), y + element.getHeight() + gui.getGuiTop()))
+        {
+            return true;
+        }
+        
+        for (int i = 0; i < 3; i++)
+        {
+            int offsetWidth = (element.getWidth() / 3) * i, offsetHeight = (element.getHeight() / 3) * i;
+            
+            if (isCoordinateVisible(x + offsetWidth + gui.getGuiLeft(), y + offsetHeight + gui.getGuiTop()))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     @Override
     public void draw()
@@ -49,7 +75,7 @@ public class ElementScrollPanel extends ElementBaseContainer
         {
             int x = posX + (int) scrollX + element.getRelativeX(), y = posY + (int) scrollY + element.getRelativeY();
             
-            if (element.isVisible() && (isCoordinateVisible(x + gui.getGuiLeft(), y + gui.getGuiTop()) || isCoordinateVisible(x + gui.getGuiLeft() + element.getWidth(), y + gui.getGuiTop() + element.getHeight())))
+            if (element.isVisible() && isElementVisible(element))
             {
                 element.draw(x, y);
             }
@@ -150,9 +176,7 @@ public class ElementScrollPanel extends ElementBaseContainer
     {
         for (ElementBase element : elements)
         {
-            int x = posX + (int) scrollX + element.getRelativeX(), y = posY + (int) scrollY + element.getRelativeY();
-            
-            if (element.isVisible() && element.intersectsWith(gui.getMouseX(), gui.getMouseY()) && (isCoordinateVisible(x + gui.getGuiLeft(), y + gui.getGuiTop()) || isCoordinateVisible(x + gui.getGuiLeft() + element.getWidth(), y + gui.getGuiTop() + element.getHeight())))
+            if (element.isVisible() && element.intersectsWith(gui.getMouseX(), gui.getMouseY()) && isElementVisible(element))
             {
                 element.addTooltip(list);
                 

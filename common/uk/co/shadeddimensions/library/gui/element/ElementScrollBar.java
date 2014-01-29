@@ -29,12 +29,17 @@ public class ElementScrollBar extends ElementBase
     @Override
     public void update()
     {
+        barSize = (int)(((float) panel.sizeY / (float) panel.contentHeight) * sizeY);
+        
+        if (barSize >= sizeY)
+        {
+            barSize = 0;
+        }
+        
         if (panel.contentHeight < panel.sizeY || !isVisible() || isDisabled())
         {
             return;
         }
-        
-        barSize = (int)(((float) panel.sizeY / (float) panel.contentHeight) * sizeY);
         
         if (Mouse.isButtonDown(0))
         {

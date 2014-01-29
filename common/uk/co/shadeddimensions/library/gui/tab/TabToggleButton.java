@@ -7,6 +7,16 @@ public class TabToggleButton extends TabBase
 {
     int closedColour = 0x666666, openColour = 0xBBBBBB;
 
+    public TabToggleButton(GuiBase gui, ItemStack item)
+    {
+        this(gui, 0, item.getUnlocalizedName(), item.getDisplayName(), item);
+    }
+    
+    public TabToggleButton(GuiBase gui, int side, ItemStack item)
+    {
+        this(gui, side, item.getUnlocalizedName(), item.getDisplayName(), item);
+    }
+    
     public TabToggleButton(GuiBase gui, String ID, String name, ItemStack item)
     {
         this(gui, 0, ID, name, item);
@@ -21,6 +31,11 @@ public class TabToggleButton extends TabBase
         this.titleColour = 0xFFFFFF;
         this.stack = item;
         this.ID = ID;
+        
+        if (stack == null)
+        {
+            maxWidth -= 20;
+        }
     }
 
     @Override

@@ -43,7 +43,7 @@ public abstract class TabBase extends ElementBase
     public Icon icon;
     public ItemStack stack;
     public String ID;
-    
+
     public TabBase(GuiBase gui)
     {
         super(gui, 0, 0);
@@ -89,7 +89,7 @@ public abstract class TabBase extends ElementBase
             gui.drawTexturedModalRect(posX, posY, 0, 0, 4, 4);
             gui.drawTexturedModalRect(posX + 4, posY + 4, 256 - currentWidth + 4, 256 - currentHeight + 4, currentWidth - 4, currentHeight - 4);
         }
-        
+
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
     }
 
@@ -106,7 +106,7 @@ public abstract class TabBase extends ElementBase
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -127,7 +127,7 @@ public abstract class TabBase extends ElementBase
         if (open)
         {
             open = false;
-            
+
             if (side == 0)
             {
                 TabTracker.setOpenedLeftTab(null);
@@ -140,7 +140,7 @@ public abstract class TabBase extends ElementBase
         else
         {
             open = true;
-            
+
             if (side == 0)
             {
                 TabTracker.setOpenedLeftTab(this.getClass());
@@ -196,12 +196,12 @@ public abstract class TabBase extends ElementBase
             setFullyOpen();
         }
     }
-    
+
     @Override
     public void draw()
     {
         drawBackground();
-        
+
         if (icon != null)
         {
             int offsetX = side == 0 ? 4 - currentWidth : 2;
@@ -212,11 +212,24 @@ public abstract class TabBase extends ElementBase
             int offsetX = side == 0 ? 4 - currentWidth : 2;
             gui.drawItemStack(stack, posX + offsetX, posY + 3);
         }
-        
+
         if (isFullyOpened() && drawName)
         {
-            int offsetX = side == 0 ? 22 - currentWidth : 22;
+            int offset = icon != null || stack != null ? 22 : 4;
+            int offsetX = side == 0 ? offset - currentWidth + 2 : offset;
             gui.getFontRenderer().drawStringWithShadow(name, posX + offsetX, posY + 7, titleColour);
         }
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return currentWidth;
+    }
+    
+    @Override
+    public int getHeight()
+    {
+        return currentHeight;
     }
 }

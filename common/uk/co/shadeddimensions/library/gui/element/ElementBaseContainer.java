@@ -3,6 +3,8 @@ package uk.co.shadeddimensions.library.gui.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import uk.co.shadeddimensions.library.gui.GuiBase;
 import uk.co.shadeddimensions.library.gui.Parser;
 
@@ -46,6 +48,7 @@ public abstract class ElementBaseContainer extends ElementBase
             if (element.isVisible())
             {
                 element.draw(posX + element.getRelativeX(), posY + element.getRelativeY());
+                GL11.glDisable(GL11.GL_LIGHTING);
             }
         }
     }

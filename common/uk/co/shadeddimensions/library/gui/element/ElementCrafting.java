@@ -31,7 +31,7 @@ public class ElementCrafting extends ElementBaseContainer
             }
             
             elements.add(new ElementIcon(parent, 61, 19, 2));
-            elements.add(new ElementItemIconWithSlot(parent, 90, 14, null, true));
+            elements.add(new ElementItemIconWithSlotAndCount(parent, 90, 14, null, true));
             elements.get(elements.size() - 2).setVisible(false);
             elements.get(elements.size() - 1).setVisible(false);
         }
@@ -42,7 +42,7 @@ public class ElementCrafting extends ElementBaseContainer
             elements.add(new ElementItemIconWithSlot(parent, 0, 36, null));
             
             elements.add(new ElementIcon(parent, 25, 19, 2));
-            elements.add(new ElementItemIconWithSlot(parent, 56, 13, null, true));
+            elements.add(new ElementItemIconWithSlotAndCount(parent, 56, 13, null, true));
             elements.get(elements.size() - 2).setVisible(false);
             elements.get(elements.size() - 1).setVisible(false);
         }
@@ -104,7 +104,7 @@ public class ElementCrafting extends ElementBaseContainer
             sizeX = type == 1 ? 82 : 116;
             elements.get(elements.size() - 2).setVisible(true);
             elements.get(elements.size() - 1).setVisible(true);
-            ((ElementItemIconWithSlot) elements.get(elements.size() - 1)).setItem(stack);
+            ((ElementItemIconWithSlotAndCount) elements.get(elements.size() - 1)).setItem(stack);
         }
         
         return this;

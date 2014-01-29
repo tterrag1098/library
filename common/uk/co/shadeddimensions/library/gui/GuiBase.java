@@ -21,7 +21,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -30,6 +29,9 @@ import uk.co.shadeddimensions.library.gui.element.ElementBase;
 import uk.co.shadeddimensions.library.gui.element.ElementFakeItemSlot;
 import uk.co.shadeddimensions.library.gui.slot.SlotFalseCopy;
 import uk.co.shadeddimensions.library.gui.tab.TabBase;
+import codechicken.nei.VisiblityData;
+import codechicken.nei.api.INEIGuiHandler;
+import codechicken.nei.api.TaggedInventoryArea;
 
 /**
  * Base class for a modular GUIs. Works with Elements {@link ElementBase} and Tabs {@link TabBase} which are both modular elements.
@@ -37,7 +39,7 @@ import uk.co.shadeddimensions.library.gui.tab.TabBase;
  * @author King Lemming
  * 
  */
-public abstract class GuiBase extends GuiContainer
+public abstract class GuiBase extends GuiContainer implements INEIGuiHandler
 {
     protected boolean drawInventory = true;
     protected int mouseX = 0;
@@ -136,6 +138,9 @@ public abstract class GuiBase extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y)
     {
+        mouseX = x - guiLeft;
+        mouseY = y - guiTop;
+        
         updateElements();
         drawBackgroundTexture();
         drawElements();
@@ -494,18 +499,6 @@ public abstract class GuiBase extends GuiContainer
     }
 
     @Override
-    public void handleMouseInput()
-    {
-        int x = Mouse.getEventX() * width / mc.displayWidth;
-        int y = height - Mouse.getEventY() * height / mc.displayHeight - 1;
-
-        mouseX = x - guiLeft;
-        mouseY = y - guiTop;
-
-        super.handleMouseInput();
-    }
-
-    @Override
     public void initGui()
     {
         super.initGui();
@@ -599,5 +592,52 @@ public abstract class GuiBase extends GuiContainer
     public Minecraft getMinecraft()
     {
         return mc;
+    }
+    
+    @Override
+    public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button)
+    {
+        return false;
+    }
+    
+    @Override
+    public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui)
+    {
+        return null;
+    }
+    
+    @Override
+    public int getItemSpawnSlot(GuiContainer gui, ItemStack item)
+    {
+        return 0;
+    }
+    
+    @Override
+    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility)
+    {
+        return null;
+    }
+    
+    @Override
+    public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h)
+    {
+        for (TabBase tab : tabs)
+        {
+            if (tab.isVisible() && tab.side == 1)
+            {
+                int xPos = guiLeft + xSize + tab.getRelativeX(), yPos = guiTop + tab.getRelativeY();
+                
+                if (x >= xPos && x <= xPos + tab.getWidth() && y >= yPos && y <= yPos + tab.getHeight())
+                {
+                    return true;
+                }
+                else if (x + w >= xPos && x + w <= xPos + tab.getWidth() && y + h >= yPos && y + h <= yPos + tab.getHeight())
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 }
