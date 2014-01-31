@@ -17,9 +17,9 @@ public class ConnectedTextures
 
     protected ConnectedTextures()
     {
-        
+
     }
-    
+
     public ConnectedTextures(String textureLocation, int block, int meta)
     {
         textureLoc = textureLocation;
@@ -58,6 +58,27 @@ public class ConnectedTextures
         }
 
         return false;
+    }
+
+    public ConnectedTextures copy(int id, int meta)
+    {
+        ConnectedTextures ct = new ConnectedTextures();
+        ct.textures = textures;
+        ct.blockID = id;
+        ct.blockMeta = meta;
+
+        return ct;
+    }
+
+    public ConnectedTextures copy(int id, int meta, int meta2)
+    {
+        ConnectedTextures ct = new ConnectedTextures();
+        ct.textures = textures;
+        ct.blockID = id;
+        ct.blockMeta = meta;
+        ct.subMeta = meta2;
+
+        return ct;
     }
 
     public Icon getBaseIcon()
@@ -176,26 +197,5 @@ public class ConnectedTextures
         {
             textures[i] = register.registerIcon(String.format(textureLoc, i));
         }
-    }
-
-    public ConnectedTextures copy(int id, int meta)
-    {
-        ConnectedTextures ct = new ConnectedTextures();
-        ct.textures = textures;
-        ct.blockID = id;
-        ct.blockMeta = meta;
-        
-        return ct;
-    }
-    
-    public ConnectedTextures copy(int id, int meta, int meta2)
-    {
-        ConnectedTextures ct = new ConnectedTextures();
-        ct.textures = textures;
-        ct.blockID = id;
-        ct.blockMeta = meta;
-        ct.subMeta = meta2;
-        
-        return ct;
     }
 }

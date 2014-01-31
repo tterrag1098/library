@@ -6,12 +6,14 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import uk.co.shadeddimensions.library.gui.GuiBase;
+import uk.co.shadeddimensions.library.gui.GuiBaseContainer;
+import uk.co.shadeddimensions.library.gui.IGuiBase;
 import uk.co.shadeddimensions.library.gui.TabTracker;
 import uk.co.shadeddimensions.library.gui.element.ElementBase;
+import uk.co.shadeddimensions.library.util.GuiUtils;
 
 /**
- * Base class for a tab element. Has self-contained rendering methods and a link back to the {@link GuiBase} it is a part of.
+ * Base class for a tab element. Has self-contained rendering methods and a link back to the {@link GuiBaseContainer} it is a part of.
  * 
  * @author King Lemming
  * 
@@ -44,13 +46,13 @@ public abstract class TabBase extends ElementBase
     public ItemStack stack;
     public String ID;
 
-    public TabBase(GuiBase gui)
+    public TabBase(IGuiBase gui)
     {
         super(gui, 0, 0);
         texture = DEFAULT_TEXTURE_RIGHT;
     }
 
-    public TabBase(GuiBase gui, int side)
+    public TabBase(IGuiBase gui, int side)
     {
         super(gui, 0, 0);
         this.side = side;
@@ -62,6 +64,30 @@ public abstract class TabBase extends ElementBase
         else
         {
             texture = DEFAULT_TEXTURE_RIGHT;
+        }
+    }
+
+    @Override
+    public void draw()
+    {
+        drawBackground();
+
+        if (icon != null)
+        {
+            int offsetX = side == 0 ? 4 - currentWidth : 2;
+            GuiUtils.drawIcon(gui, icon, posX + offsetX, posY + 3, 1);
+        }
+        else if (stack != null)
+        {
+            int offsetX = side == 0 ? 4 - currentWidth : 2;
+            GuiUtils.drawItemStack(gui, stack, posX + offsetX, posY + 3);
+        }
+
+        if (isFullyOpened() && drawName)
+        {
+            int offset = icon != null || stack != null ? 22 : 4;
+            int offsetX = side == 0 ? offset - currentWidth + 2 : offset;
+            gui.getFontRenderer().drawStringWithShadow(name, posX + offsetX, posY + 7, titleColour);
         }
     }
 
@@ -77,20 +103,32 @@ public abstract class TabBase extends ElementBase
 
         if (side == 0)
         {
-            gui.drawTexturedModalRect(posX - currentWidth, posY + 4, 0, 256 - currentHeight + 4, 4, currentHeight - 4);
-            gui.drawTexturedModalRect(posX - currentWidth + 4, posY, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
-            gui.drawTexturedModalRect(posX - currentWidth, posY, 0, 0, 4, 4);
-            gui.drawTexturedModalRect(posX - currentWidth + 4, posY + 4, 256 - currentWidth + 4, 256 - currentHeight + 4, currentWidth - 4, currentHeight - 4);
+            GuiUtils.instance.drawTexturedModalRect(posX - currentWidth, posY + 4, 0, 256 - currentHeight + 4, 4, currentHeight - 4);
+            GuiUtils.instance.drawTexturedModalRect(posX - currentWidth + 4, posY, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
+            GuiUtils.instance.drawTexturedModalRect(posX - currentWidth, posY, 0, 0, 4, 4);
+            GuiUtils.instance.drawTexturedModalRect(posX - currentWidth + 4, posY + 4, 256 - currentWidth + 4, 256 - currentHeight + 4, currentWidth - 4, currentHeight - 4);
         }
         else
         {
-            gui.drawTexturedModalRect(posX, posY, 0, 256 - currentHeight, 4, currentHeight);
-            gui.drawTexturedModalRect(posX + 4, posY, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
-            gui.drawTexturedModalRect(posX, posY, 0, 0, 4, 4);
-            gui.drawTexturedModalRect(posX + 4, posY + 4, 256 - currentWidth + 4, 256 - currentHeight + 4, currentWidth - 4, currentHeight - 4);
+            GuiUtils.instance.drawTexturedModalRect(posX, posY, 0, 256 - currentHeight, 4, currentHeight);
+            GuiUtils.instance.drawTexturedModalRect(posX + 4, posY, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
+            GuiUtils.instance.drawTexturedModalRect(posX, posY, 0, 0, 4, 4);
+            GuiUtils.instance.drawTexturedModalRect(posX + 4, posY + 4, 256 - currentWidth + 4, 256 - currentHeight + 4, currentWidth - 4, currentHeight - 4);
         }
 
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0F);
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return currentHeight;
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return currentWidth;
     }
 
     public boolean intersectsWith(int mouseX, int mouseY, int shiftX, int shiftY)
@@ -195,41 +233,5 @@ public abstract class TabBase extends ElementBase
         {
             setFullyOpen();
         }
-    }
-
-    @Override
-    public void draw()
-    {
-        drawBackground();
-
-        if (icon != null)
-        {
-            int offsetX = side == 0 ? 4 - currentWidth : 2;
-            gui.drawIcon(icon, posX + offsetX, posY + 3, 1);
-        }
-        else if (stack != null)
-        {
-            int offsetX = side == 0 ? 4 - currentWidth : 2;
-            gui.drawItemStack(stack, posX + offsetX, posY + 3);
-        }
-
-        if (isFullyOpened() && drawName)
-        {
-            int offset = icon != null || stack != null ? 22 : 4;
-            int offsetX = side == 0 ? offset - currentWidth + 2 : offset;
-            gui.getFontRenderer().drawStringWithShadow(name, posX + offsetX, posY + 7, titleColour);
-        }
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return currentWidth;
-    }
-    
-    @Override
-    public int getHeight()
-    {
-        return currentHeight;
     }
 }

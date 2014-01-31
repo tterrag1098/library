@@ -40,7 +40,7 @@ public class SlotFalseCopy extends Slot
         {
             stack.stackSize = 1;
         }
-        
+
         inventory.setInventorySlotContents(slotIndex, stack);
         onSlotChanged();
     }

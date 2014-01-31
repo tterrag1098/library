@@ -1,9 +1,9 @@
 package uk.co.shadeddimensions.library.gui.slot;
 
-import uk.co.shadeddimensions.library.util.ItemHelper;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import uk.co.shadeddimensions.library.util.ItemHelper;
 
 public class SlotEnergy extends Slot
 {

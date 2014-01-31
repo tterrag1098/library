@@ -14,7 +14,7 @@ public class ConnectedTexturesDetailed extends ConnectedTextures
     {
         super();
     }
-    
+
     public ConnectedTexturesDetailed(String textureLocation, int block, int meta)
     {
         super(textureLocation, block, meta);
@@ -25,6 +25,29 @@ public class ConnectedTexturesDetailed extends ConnectedTextures
     {
         super(textureLocation, block, meta, meta2);
         textures = new Icon[47];
+    }
+
+    @Override
+    public ConnectedTexturesDetailed copy(int id, int meta)
+    {
+        ConnectedTexturesDetailed ct = new ConnectedTexturesDetailed();
+        ct.textures = textures;
+        ct.blockID = id;
+        ct.blockMeta = meta;
+
+        return ct;
+    }
+
+    @Override
+    public ConnectedTexturesDetailed copy(int id, int meta, int meta2)
+    {
+        ConnectedTexturesDetailed ct = new ConnectedTexturesDetailed();
+        ct.textures = textures;
+        ct.blockID = id;
+        ct.blockMeta = meta;
+        ct.subMeta = meta2;
+
+        return ct;
     }
 
     @Override
@@ -292,28 +315,5 @@ public class ConnectedTexturesDetailed extends ConnectedTextures
         }
 
         return textures[index];
-    }
-    
-    @Override
-    public ConnectedTexturesDetailed copy(int id, int meta)
-    {
-        ConnectedTexturesDetailed ct = new ConnectedTexturesDetailed();
-        ct.textures = textures;
-        ct.blockID = id;
-        ct.blockMeta = meta;
-        
-        return ct;
-    }
-    
-    @Override
-    public ConnectedTexturesDetailed copy(int id, int meta, int meta2)
-    {
-        ConnectedTexturesDetailed ct = new ConnectedTexturesDetailed();
-        ct.textures = textures;
-        ct.blockID = id;
-        ct.blockMeta = meta;
-        ct.subMeta = meta2;
-        
-        return ct;
     }
 }

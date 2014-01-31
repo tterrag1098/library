@@ -5,13 +5,48 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.event.FMLInterModComms;
 
-public class ThermalExpansionHelper {
+public class ThermalExpansionHelper
+{
 
-    private ThermalExpansionHelper() {
+    public static void addCompressionFuel(String fluidName, int energy)
+    {
 
+        NBTTagCompound toSend = new NBTTagCompound();
+
+        toSend.setString("fluidName", fluidName);
+        toSend.setInteger("energy", energy);
+
+        FMLInterModComms.sendMessage("ThermalExpansion", "CompressionFuel", toSend);
     }
 
-    public static void addFurnaceRecipe(int energy, ItemStack input, ItemStack output) {
+    public static void addCoolant(String fluidName, int energy)
+    {
+
+        NBTTagCompound toSend = new NBTTagCompound();
+
+        toSend.setString("fluidName", fluidName);
+        toSend.setInteger("energy", energy);
+
+        FMLInterModComms.sendMessage("ThermalExpansion", "Coolant", toSend);
+    }
+
+    public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output)
+    {
+
+        NBTTagCompound toSend = new NBTTagCompound();
+
+        toSend.setInteger("energy", energy);
+        toSend.setCompoundTag("input", new NBTTagCompound());
+        toSend.setCompoundTag("output", new NBTTagCompound());
+
+        input.writeToNBT(toSend.getCompoundTag("input"));
+        output.writeToNBT(toSend.getCompoundTag("output"));
+
+        FMLInterModComms.sendMessage("ThermalExpansion", "CrucibleRecipe", toSend);
+    }
+
+    public static void addFurnaceRecipe(int energy, ItemStack input, ItemStack output)
+    {
 
         NBTTagCompound toSend = new NBTTagCompound();
         toSend.setInteger("energy", energy);
@@ -23,17 +58,31 @@ public class ThermalExpansionHelper {
         FMLInterModComms.sendMessage("ThermalExpansion", "FurnaceRecipe", toSend);
     }
 
-    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
+    public static void addMagmaticFuel(String fluidName, int energy)
+    {
+
+        NBTTagCompound toSend = new NBTTagCompound();
+
+        toSend.setString("fluidName", fluidName);
+        toSend.setInteger("energy", energy);
+
+        FMLInterModComms.sendMessage("ThermalExpansion", "MagmaticFuel", toSend);
+    }
+
+    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput)
+    {
 
         addPulverizerRecipe(energy, input, primaryOutput, null, 0);
     }
 
-    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput)
+    {
 
         addPulverizerRecipe(energy, input, primaryOutput, secondaryOutput, 100);
     }
 
-    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+    public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance)
+    {
 
         NBTTagCompound toSend = new NBTTagCompound();
 
@@ -50,17 +99,31 @@ public class ThermalExpansionHelper {
         FMLInterModComms.sendMessage("ThermalExpansion", "PulverizerRecipe", toSend);
     }
 
-    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
+    public static void addReactantFuel(String fluidName, int energy)
+    {
+
+        NBTTagCompound toSend = new NBTTagCompound();
+
+        toSend.setString("fluidName", fluidName);
+        toSend.setInteger("energy", energy);
+
+        FMLInterModComms.sendMessage("ThermalExpansion", "ReactantFuel", toSend);
+    }
+
+    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput)
+    {
 
         addSawmillRecipe(energy, input, primaryOutput, null, 0);
     }
 
-    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput)
+    {
 
         addSawmillRecipe(energy, input, primaryOutput, secondaryOutput, 100);
     }
 
-    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+    public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance)
+    {
 
         NBTTagCompound toSend = new NBTTagCompound();
 
@@ -77,18 +140,37 @@ public class ThermalExpansionHelper {
         FMLInterModComms.sendMessage("ThermalExpansion", "SawmillRecipe", toSend);
     }
 
-    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+    /**
+     * Use this to register an Ore TYPE as a "Blast" recipe - it will require Pyrotheum Dust to smelt. Do not add the prefix. This is an opt-in for ores which do NOT have vanilla furnace recipes.
+     * 
+     * Ex: "Steel" or "ElectrumFlux", not "dustSteel" or "dustElectrumFlux"
+     * 
+     * @param oreType
+     */
+    public static void addSmelterBlastOre(String oreType)
+    {
+
+        NBTTagCompound toSend = new NBTTagCompound();
+
+        toSend.setString("oreType", oreType);
+
+        FMLInterModComms.sendMessage("ThermalExpansion", "SmelterBlastOreType", toSend);
+    }
+
+    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput)
+    {
 
         addSmelterRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
     }
 
-    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
+    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput)
+    {
 
         addSmelterRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
     }
 
-    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-            int secondaryChance) {
+    public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance)
+    {
 
         NBTTagCompound toSend = new NBTTagCompound();
 
@@ -107,55 +189,8 @@ public class ThermalExpansionHelper {
         FMLInterModComms.sendMessage("ThermalExpansion", "SmelterRecipe", toSend);
     }
 
-    /**
-     * Use this to register an Ore TYPE as a "Blast" recipe - it will require Pyrotheum Dust to smelt. Do not add the prefix. This is an opt-in for ores which
-     * do NOT have vanilla furnace recipes.
-     * 
-     * Ex: "Steel" or "ElectrumFlux", not "dustSteel" or "dustElectrumFlux"
-     * 
-     * @param oreType
-     */
-    public static void addSmelterBlastOre(String oreType) {
-
-        NBTTagCompound toSend = new NBTTagCompound();
-
-        toSend.setString("oreType", oreType);
-
-        FMLInterModComms.sendMessage("ThermalExpansion", "SmelterBlastOreType", toSend);
-    }
-
-    public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output) {
-
-        NBTTagCompound toSend = new NBTTagCompound();
-
-        toSend.setInteger("energy", energy);
-        toSend.setCompoundTag("input", new NBTTagCompound());
-        toSend.setCompoundTag("output", new NBTTagCompound());
-
-        input.writeToNBT(toSend.getCompoundTag("input"));
-        output.writeToNBT(toSend.getCompoundTag("output"));
-
-        FMLInterModComms.sendMessage("ThermalExpansion", "CrucibleRecipe", toSend);
-    }
-
-    public static void addTransposerFill(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
-
-        NBTTagCompound toSend = new NBTTagCompound();
-
-        toSend.setInteger("energy", energy);
-        toSend.setCompoundTag("input", new NBTTagCompound());
-        toSend.setCompoundTag("output", new NBTTagCompound());
-        toSend.setCompoundTag("fluid", new NBTTagCompound());
-
-        input.writeToNBT(toSend.getCompoundTag("input"));
-        output.writeToNBT(toSend.getCompoundTag("output"));
-        toSend.setBoolean("reversible", reversible);
-        fluid.writeToNBT(toSend.getCompoundTag("fluid"));
-
-        FMLInterModComms.sendMessage("ThermalExpansion", "TransposerFillRecipe", toSend);
-    }
-
-    public static void addTransposerExtract(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
+    public static void addTransposerExtract(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible)
+    {
 
         NBTTagCompound toSend = new NBTTagCompound();
 
@@ -173,44 +208,27 @@ public class ThermalExpansionHelper {
         FMLInterModComms.sendMessage("ThermalExpansion", "TransposerExtractRecipe", toSend);
     }
 
-    public static void addMagmaticFuel(String fluidName, int energy) {
+    public static void addTransposerFill(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible)
+    {
 
         NBTTagCompound toSend = new NBTTagCompound();
 
-        toSend.setString("fluidName", fluidName);
         toSend.setInteger("energy", energy);
+        toSend.setCompoundTag("input", new NBTTagCompound());
+        toSend.setCompoundTag("output", new NBTTagCompound());
+        toSend.setCompoundTag("fluid", new NBTTagCompound());
 
-        FMLInterModComms.sendMessage("ThermalExpansion", "MagmaticFuel", toSend);
+        input.writeToNBT(toSend.getCompoundTag("input"));
+        output.writeToNBT(toSend.getCompoundTag("output"));
+        toSend.setBoolean("reversible", reversible);
+        fluid.writeToNBT(toSend.getCompoundTag("fluid"));
+
+        FMLInterModComms.sendMessage("ThermalExpansion", "TransposerFillRecipe", toSend);
     }
 
-    public static void addCompressionFuel(String fluidName, int energy) {
+    private ThermalExpansionHelper()
+    {
 
-        NBTTagCompound toSend = new NBTTagCompound();
-
-        toSend.setString("fluidName", fluidName);
-        toSend.setInteger("energy", energy);
-
-        FMLInterModComms.sendMessage("ThermalExpansion", "CompressionFuel", toSend);
-    }
-
-    public static void addReactantFuel(String fluidName, int energy) {
-
-        NBTTagCompound toSend = new NBTTagCompound();
-
-        toSend.setString("fluidName", fluidName);
-        toSend.setInteger("energy", energy);
-
-        FMLInterModComms.sendMessage("ThermalExpansion", "ReactantFuel", toSend);
-    }
-
-    public static void addCoolant(String fluidName, int energy) {
-
-        NBTTagCompound toSend = new NBTTagCompound();
-
-        toSend.setString("fluidName", fluidName);
-        toSend.setInteger("energy", energy);
-
-        FMLInterModComms.sendMessage("ThermalExpansion", "Coolant", toSend);
     }
 
 }

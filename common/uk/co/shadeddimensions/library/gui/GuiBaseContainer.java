@@ -1,41 +1,41 @@
 package uk.co.shadeddimensions.library.gui;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
+import uk.co.shadeddimensions.library.container.ContainerBase;
 import uk.co.shadeddimensions.library.gui.element.ElementBase;
 import uk.co.shadeddimensions.library.gui.element.ElementFakeItemSlot;
+import uk.co.shadeddimensions.library.gui.slot.SlotFalseCopy;
 import uk.co.shadeddimensions.library.gui.tab.TabBase;
 import uk.co.shadeddimensions.library.util.GuiUtils;
+import codechicken.nei.VisiblityData;
+import codechicken.nei.api.INEIGuiHandler;
+import codechicken.nei.api.TaggedInventoryArea;
 
 /**
- * A modular gui without the need for an inventory. This should be used instead of {@link GuiBaseContainer} if you do not require an inventory to be displayed on the screen.
+ * Base class for a modular GUIs. Works with Elements {@link ElementBase} and Tabs {@link TabBase} which are both modular elements. Use if your GUI requires access to an inventory. Based off of
+ * GuiBase by King Lemming.
  * 
  * @author Alz454
+ * 
  */
-public class GuiBase extends GuiScreen implements IGuiBase
+public abstract class GuiBaseContainer extends GuiContainer implements INEIGuiHandler, IGuiBase
 {
-    protected RenderItem itemRenderer = new RenderItem();
-
-    protected int xSize = 176;
-    protected int ySize = 166;
-    protected int guiLeft;
-    protected int guiTop;
+    protected boolean drawInventory = true;
 
     protected int mouseX = 0;
     protected int mouseY = 0;
@@ -46,18 +46,29 @@ public class GuiBase extends GuiScreen implements IGuiBase
 
     protected String name;
     protected ResourceLocation texture;
+
     protected ArrayList<TabBase> tabs = new ArrayList<TabBase>();
     protected ArrayList<ElementBase> elements = new ArrayList<ElementBase>();
-    protected List<String> tooltip = new LinkedList<String>();
 
-    public GuiBase()
+    public GuiBaseContainer()
     {
-
+        super(new ContainerBase());
     }
 
-    public GuiBase(ResourceLocation texture)
+    public GuiBaseContainer(Container container)
     {
+        super(container);
+    }
+
+    public GuiBaseContainer(Container container, ResourceLocation texture)
+    {
+        super(container);
         this.texture = texture;
+    }
+
+    public GuiBaseContainer(ResourceLocation texture)
+    {
+        this(new ContainerBase(), texture);
     }
 
     @Override
@@ -98,12 +109,6 @@ public class GuiBase extends GuiScreen implements IGuiBase
     }
 
     @Override
-    public boolean doesGuiPauseGame()
-    {
-        return false;
-    }
-
-    @Override
     public void drawBackgroundTexture()
     {
         if (texture != null)
@@ -128,21 +133,29 @@ public class GuiBase extends GuiScreen implements IGuiBase
         }
     }
 
-    public void drawGuiBackgroundLayer(float f, int mouseX, int mouseY)
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
     {
-        this.mouseX = mouseX - guiLeft;
-        this.mouseY = mouseY - guiTop;
+        mouseX = mouseX - guiLeft;
+        mouseY = mouseY - guiTop;
 
+        drawBackgroundTexture();
         drawBackgroundTexture();
         drawElements();
         drawTabs();
     }
 
-    public void drawGuiForegroundLayer(int mouseX, int mouseY)
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         if (drawName)
         {
             fontRenderer.drawString(StatCollector.translateToLocal(name), GuiUtils.getCenteredOffset(this, StatCollector.translateToLocal(name), xSize), 6, 0x404040);
+        }
+
+        if (drawInventory)
+        {
+            fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 3, 0x404040);
         }
 
         TabBase tab = getTabAtPosition(mouseX - guiLeft, mouseY - guiTop);
@@ -172,39 +185,6 @@ public class GuiBase extends GuiScreen implements IGuiBase
                 return;
             }
         }
-    }
-
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float f)
-    {
-        drawDefaultBackground();
-        drawBackgroundTexture();
-        drawGuiBackgroundLayer(f, mouseX, mouseY);
-
-        float left = guiLeft, top = guiTop;
-
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-        super.drawScreen(mouseX, mouseY, f);
-
-        RenderHelper.enableGUIStandardItemLighting();
-        GL11.glPushMatrix();
-        GL11.glTranslatef(left, top, 0.0F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f / 1.0F, 240f / 1.0F);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_LIGHTING);
-
-        drawGuiForegroundLayer(mouseX, mouseY);
-
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        RenderHelper.enableStandardItemLighting();
     }
 
     @Override
@@ -273,9 +253,21 @@ public class GuiBase extends GuiScreen implements IGuiBase
     }
 
     @Override
+    public List<TaggedInventoryArea> getInventoryAreas(GuiContainer gui)
+    {
+        return null;
+    }
+
+    @Override
     public RenderItem getItemRenderer()
     {
         return itemRenderer;
+    }
+
+    @Override
+    public int getItemSpawnSlot(GuiContainer gui, ItemStack item)
+    {
+        return 0;
     }
 
     @Override
@@ -363,6 +355,12 @@ public class GuiBase extends GuiScreen implements IGuiBase
     }
 
     @Override
+    public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button)
+    {
+        return false;
+    }
+
+    @Override
     public void handleElementButtonClick(String buttonName, int mouseButton)
     {
 
@@ -375,11 +373,32 @@ public class GuiBase extends GuiScreen implements IGuiBase
     }
 
     @Override
+    public boolean hideItemPanelSlot(GuiContainer gui, int x, int y, int w, int h)
+    {
+        for (TabBase tab : tabs)
+        {
+            if (tab.isVisible() && tab.side == 1)
+            {
+                int xPos = guiLeft + xSize + tab.getRelativeX(), yPos = guiTop + tab.getRelativeY();
+
+                if (x >= xPos && x <= xPos + tab.getWidth() && y >= yPos && y <= yPos + tab.getHeight())
+                {
+                    return true;
+                }
+                else if (x + w >= xPos && x + w <= xPos + tab.getWidth() && y + h >= yPos && y + h <= yPos + tab.getHeight())
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public void initGui()
     {
         super.initGui();
-        guiLeft = (width - xSize) / 2;
-        guiTop = (height - ySize) / 2;
 
         tabs.clear();
         elements.clear();
@@ -396,14 +415,9 @@ public class GuiBase extends GuiScreen implements IGuiBase
     }
 
     @Override
-    protected void keyTyped(char character, int index)
+    public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility)
     {
-        super.keyTyped(character, index);
-
-        if (index == 1 || index == getMinecraft().gameSettings.keyBindInventory.keyCode)
-        {
-            getMinecraft().thePlayer.closeScreen();
-        }
+        return null;
     }
 
     @Override
@@ -438,19 +452,29 @@ public class GuiBase extends GuiScreen implements IGuiBase
     }
 
     @Override
-    public void setZLevel(float zlevel)
+    protected void mouseClickMove(int mX, int mY, int lastClick, long timeSinceClick)
     {
-        zLevel = zlevel;
+        Slot slot = getSlotAtPosition(mX, mY);
+        ItemStack itemstack = getMinecraft().thePlayer.inventory.getItemStack();
+
+        if (field_94076_q && slot != null && itemstack != null && slot instanceof SlotFalseCopy)
+        {
+            if (lastIndex != slot.slotNumber)
+            {
+                lastIndex = slot.slotNumber;
+                handleMouseClick(slot, slot.slotNumber, 0, 0);
+            }
+        }
+        else
+        {
+            lastIndex = -1;
+            super.mouseClickMove(mX, mY, lastClick, timeSinceClick);
+        }
     }
 
     @Override
-    public void updateScreen()
+    public void setZLevel(float zlevel)
     {
-        super.updateScreen();
-
-        if (!getMinecraft().thePlayer.isEntityAlive() || getMinecraft().thePlayer.isDead)
-        {
-            getMinecraft().thePlayer.closeScreen();
-        }
+        zLevel = zlevel;
     }
 }
